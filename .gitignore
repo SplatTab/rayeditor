@@ -1,0 +1,13 @@
+#imgui log stuff
+imgui.ini
+# Ignore compiled binaries
+*.o
+*.exe
+*.a
+*.bc
+*.so
+*.so.*
+# Ignore build directories
+[Bb]in
+[Dd]ebug/
+[R]elease/

@@ -1,0 +1,30 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}/**"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "windowsSdkVersion": "10.0.19041.0",
+            "compilerPath": "C:/w64devkit/bin/g++.exe",
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "windows-gcc-x86",
+            "compilerArgs": [
+                "-O2",
+                "-Wall",
+                "-Wno-missing-braces"
+            ],
+            "configurationProvider": "ms-vscode.makefile-tools",
+            "forcedInclude": [
+                "${workspaceFolder}/include/rayeditor.hpp"
+            ]
+        }
+    ],
+    "version": 4
+}
