@@ -7,12 +7,22 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
+  build-windows:
 
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v3
-      
-    - name: Install dependencies
+
+    - name: Build
+      run: make
+
+  build-linux:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Build
       run: make

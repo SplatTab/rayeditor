@@ -1,5 +1,6 @@
 #include <rlImGui.h>
 #include "rayeditor.hpp"
+#include <iostream>
 
 using namespace RayEditor;
 using namespace Utility;
