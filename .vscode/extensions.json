@@ -1,0 +1,7 @@
+{
+    "recommendations": [
+        "redlin.remove-tabs-on-save",
+        "shardulm94.trailing-spaces",
+        "ms-vscode.cpptools-extension-pack"
+    ]
+}

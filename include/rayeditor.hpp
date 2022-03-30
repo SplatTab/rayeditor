@@ -27,23 +27,31 @@ namespace RayEditor {
                 static void Debug(std::string);
                 static void Warning(std::string);
                 static void Error(std::string);
-                static void TraceLog(int logType, const char* text, va_list args);
+                static void TraceLog(int logType, const char *text, va_list args);
         };
 
         namespace RLCommonUtils {
-            
+
             class StringUtils {
                 public:
 
-                    static char* stristr(const char* str1, const char* str2);
+                    static char *stristr(const char *str1, const char * str2);
             };
         }
     }
 
     namespace Editor {
-        class CurrentProject {
-            static bool IsProjectLoaded();
-            static const char* GetProjectDirectory();
+        #define EDITOR_VERSION "0.0.2"
+
+        class Project {
+            public:
+
+                static bool IsProjectLoaded();
+                static const char *GetProjectDirectory();
+                static bool SetProjectDirectory(const char *projectPath);
+
+            private:
+                inline static const char *projectDir;
         };
     }
 
@@ -54,7 +62,7 @@ namespace RayEditor {
 
                 static void DrawWindow();
         };
-    
+
         class ConsoleDock : public Dock {
             public:
 
@@ -64,7 +72,7 @@ namespace RayEditor {
             private:
 
                 inline static std::vector<LogItem> logItems;
-                inline static char FilterText[512] = { 0 };
+                inline static char filterText[512] = { 0 };
         };
 
         class AssetDock : public Dock {
@@ -75,7 +83,15 @@ namespace RayEditor {
             private:
 
                 inline static std::vector<std::string> files;
-                inline static char FilterText[512] = { 0 };
+                inline static char filterText[512] = { 0 };
+        };
+
+        class TopMenuDock : public Dock {
+            public:
+
+                static void DrawWindow();
+                inline static bool projectOpening;
+                inline static bool creatingProject;
         };
 
         class DockManager {

@@ -13,7 +13,7 @@ void AssetDock::DrawWindow() {
 
     ImGui::SameLine();
     ImGui::SetNextItemWidth(200);
-    ImGui::InputTextWithHint("###filterText", "Filter", FilterText, 512);
+    ImGui::InputTextWithHint("###filterText", "Filter", filterText, 512);
 
     ImGui::SameLine();
     bool copy = false;
@@ -26,7 +26,7 @@ void AssetDock::DrawWindow() {
     {
         files.clear();
         int count = 0;
-        char** dirfiles = GetDirectoryFiles(GetApplicationDirectory(), &count);
+        char **dirfiles = GetDirectoryFiles(GetApplicationDirectory(), &count);
         std::string filesstr = std::string((char*)dirfiles);
         files.push_back(filesstr);
         free(dirfiles);
@@ -36,10 +36,9 @@ void AssetDock::DrawWindow() {
 
     for (auto& line : files)
     {
-        if (FilterText[0] != '\0')
+        if (filterText[0] != '\0')
         {
-            if (StringUtils::stristr(line.c_str(), FilterText) == nullptr)
-                continue;
+            if (StringUtils::stristr(line.c_str(), filterText) == nullptr)continue;
         }
         ImGui::TextColored(Conversion::RayColorToImguiColor(RAYWHITE), "%s", line.c_str());
         ImGui::SameLine();

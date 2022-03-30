@@ -1,5 +1,5 @@
 IMGUIFILES = lib/imgui/*.cpp
-SRCFILES = src/docks/*.cpp src/utility/*.cpp src/main.cpp
+SRCFILES = src/docks/*.cpp src/utility/*.cpp src/editor/*.cpp src/main.cpp
 OUTPUT = rayeditor.exe
 
 default:

@@ -57,7 +57,7 @@ char* StringUtils::stristr(const char* str1, const char* str2)
             {
                 p1 = r + 1;
             }
-            
+
             if (tolower((unsigned char)*p1) == tolower((unsigned char)*p2))
             {
                 r = p1;

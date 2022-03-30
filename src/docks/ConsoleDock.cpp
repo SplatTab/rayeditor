@@ -13,7 +13,7 @@ void ConsoleDock::DrawWindow() {
 
     ImGui::SameLine();
     ImGui::SetNextItemWidth(200);
-    ImGui::InputTextWithHint("###filterText", "Filter", FilterText, 512);
+    ImGui::InputTextWithHint("###filterText", "Filter", filterText, 512);
 
     ImGui::SameLine();
     bool copy = false;
@@ -32,9 +32,9 @@ void ConsoleDock::DrawWindow() {
 
     for (auto& line : logItems)
     {
-        if (FilterText[0] != '\0')
+        if (filterText[0] != '\0')
         {
-            if (StringUtils::stristr(line.logText.c_str(), FilterText) == nullptr)
+            if (StringUtils::stristr(line.logText.c_str(), filterText) == nullptr)
                 continue;
         }
         ImGui::TextColored(Conversion::RayColorToImguiColor(line.logColor), "%s", line.prefix.c_str());
@@ -51,6 +51,10 @@ void ConsoleDock::DrawWindow() {
     ImGui::End();
 }
 
+/// <summary>
+/// Adds a log item to the console to be drawn.
+/// </summary>
+/// <param name="logItem">The LogItem to be added to the logs.</param>
 void ConsoleDock::AddLog(LogItem logItem) {
     ConsoleDock::logItems.push_back(logItem);
 }

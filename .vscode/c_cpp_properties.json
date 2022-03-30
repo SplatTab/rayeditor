@@ -15,15 +15,7 @@
             "cStandard": "c17",
             "cppStandard": "c++17",
             "intelliSenseMode": "windows-gcc-x86",
-            "compilerArgs": [
-                "-O2",
-                "-Wall",
-                "-Wno-missing-braces"
-            ],
-            "configurationProvider": "ms-vscode.makefile-tools",
-            "forcedInclude": [
-                "${workspaceFolder}/include/rayeditor.hpp"
-            ]
+            "configurationProvider": "ms-vscode.makefile-tools"
         }
     ],
     "version": 4
