@@ -6,10 +6,7 @@ using namespace Utility;
 using namespace RLCommonUtils;
 
 void ConsoleDock::DrawWindow() {
-    if (!ImGui::Begin("Console"))
-    {
-        ImGui::End();
-    }
+    ImGui::Begin("Console");
 
     ImGui::SameLine();
     ImGui::SetNextItemWidth(200);

@@ -33,7 +33,9 @@ int main(int argc, char *argv[]){
 
     Log::Info("Welcome to " + Title); // Greetings!
 
-    while (!WindowShouldClose())
+    bool dockspaceActive;
+
+    while (!WindowShouldClose() && !Application::quit)
     {
 
         BeginDrawing();
@@ -42,9 +44,31 @@ int main(int argc, char *argv[]){
 
         rlImGuiBegin();
 
-            DockManager::DrawDocks();
+            // Main Dockspace
+            //_________________________________________________________________________________________________________________________________________________________________
+            ImGui::SetNextWindowPos(ImVec2(0, 0));
+            ImGui::SetNextWindowSize(ImVec2(float(GetScreenWidth()), float(GetScreenHeight())));
+
+            ImGuiWindowFlags dockSpaceFlags = ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoTitleBar
+            | ImGuiWindowFlags_NoResize |ImGuiWindowFlags_NoMove |ImGuiWindowFlags_NoCollapse |ImGuiWindowFlags_MenuBar |ImGuiWindowFlags_NoBackground;
+            ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
+
+            dockspaceActive = (ImGui::Begin("Main", NULL, dockSpaceFlags));
+            ImGui::PopStyleVar();
+
+            ImGui::DockSpace(ImGui::GetID("Dockspace"), ImVec2(0.0f, 0.0f),  ImGuiDockNodeFlags_PassthruCentralNode);
+            //_________________________________________________________________________________________________________________________________________________________________
+
+            ToolbarDock::DrawWindow();
+
+            ImGui::End();
+
+            if (dockspaceActive) DockManager::DrawDocks();
 
         rlImGuiEnd();
+
+            DrawFPS(0, GetScreenHeight() - 20);
+
         EndDrawing();
     }
 

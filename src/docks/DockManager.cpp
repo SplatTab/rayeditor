@@ -8,10 +8,9 @@ using namespace Editor;
 /// Draws and handles docks/menus UI.
 /// </summary>
 void DockManager::DrawDocks() {
-    TopMenuDock::DrawWindow();
     ConsoleDock::DrawWindow();
 
-    if (Project::IsProjectLoaded())
+    if (Project::IsProjectLoaded)
     {
         AssetDock::DrawWindow();
     }

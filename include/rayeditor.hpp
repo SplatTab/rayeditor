@@ -46,17 +46,22 @@ namespace RayEditor {
         class Project {
             public:
 
-                static bool IsProjectLoaded();
-                static const char *GetProjectDirectory();
+                static std::string GetProjectDirectory();
                 static bool SetProjectDirectory(const char *projectPath);
+                inline static bool IsProjectLoaded;
 
             private:
-                inline static const char *projectDir;
+                inline static std::string projectDir;
+        };
+
+        class Application {
+            public:
+
+                inline static bool quit;
         };
     }
 
     namespace Docks {
-
         class Dock {
             public:
 
@@ -86,12 +91,10 @@ namespace RayEditor {
                 inline static char filterText[512] = { 0 };
         };
 
-        class TopMenuDock : public Dock {
+        class ToolbarDock : public Dock {
             public:
 
                 static void DrawWindow();
-                inline static bool projectOpening;
-                inline static bool creatingProject;
         };
 
         class DockManager {

@@ -248,7 +248,7 @@ static void rlImGuiRenderTriangles(unsigned int count, int indexStart, const ImV
 {
     if (count < 3)
         return;
-	
+    
     Texture* texture = (Texture*)texturePtr;
 
     unsigned int textureId = (texture == nullptr) ? 0 : texture->id;
@@ -341,6 +341,7 @@ void rlImGuiEndInitImGui()
     io.BackendPlatformName = "imgui_impl_raylib";
 
     io.BackendFlags |= ImGuiBackendFlags_HasMouseCursors;
+    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
     io.KeyMap[ImGuiKey_Tab] = KEY_TAB;
     io.KeyMap[ImGuiKey_LeftArrow] = KEY_LEFT;

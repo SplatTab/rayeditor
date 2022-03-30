@@ -1,15 +1,15 @@
 #include "rayeditor.hpp"
+#include <filesystem>
 
 using namespace RayEditor;
 using namespace Docks;
+using namespace Editor;
 using namespace Utility;
 using namespace RLCommonUtils;
+using namespace std::filesystem;
 
 void AssetDock::DrawWindow() {
-    if (!ImGui::Begin("Asset Manager"))
-    {
-        ImGui::End();
-    }
+    ImGui::Begin("Asset Manager");
 
     ImGui::SameLine();
     ImGui::SetNextItemWidth(200);
@@ -24,12 +24,12 @@ void AssetDock::DrawWindow() {
     ImGui::SameLine();
     if (ImGui::Button("Refresh"))
     {
+        // Get every file in the project directory
         files.clear();
-        int count = 0;
-        char **dirfiles = GetDirectoryFiles(GetApplicationDirectory(), &count);
-        std::string filesstr = std::string((char*)dirfiles);
-        files.push_back(filesstr);
-        free(dirfiles);
+        for (const auto & p : directory_iterator(Project::GetProjectDirectory()))
+        {
+            files.push_back(p.path().string());
+        }
     }
 
     std::string copyBuffer;
@@ -41,7 +41,6 @@ void AssetDock::DrawWindow() {
             if (StringUtils::stristr(line.c_str(), filterText) == nullptr)continue;
         }
         ImGui::TextColored(Conversion::RayColorToImguiColor(RAYWHITE), "%s", line.c_str());
-        ImGui::SameLine();
         if (copy)
             copyBuffer += line + "\r\n";
     }

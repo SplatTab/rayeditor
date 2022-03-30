@@ -1,26 +1,16 @@
 #include "rayeditor.hpp"
+#include <filesystem>
 #include <algorithm>
 
 using namespace RayEditor;
 using namespace Editor;
-
-/// <summary>
-/// Checks if a project is loaded.
-/// </summary>
-/// <returns>If a valid project directory is loaded</returns>
-bool Project::IsProjectLoaded() {
-    if (SetProjectDirectory(projectDir)) {
-        return true;
-    }
-
-    return false;
-}
+using namespace std::filesystem;
 
 /// <summary>
 /// Gets the projects directory be sure to check if the project is loaded first.
 /// </summary>
 /// <returns>The active projects directory.</returns>
-const char *Project::GetProjectDirectory() {
+std::string Project::GetProjectDirectory() {
     return projectDir;
 }
 
@@ -38,13 +28,15 @@ bool Project::SetProjectDirectory(const char *projectPath) {
     std::string projectPathStr(projectPath);
     std::replace(projectPathStr.begin(), projectPathStr.end(), '/', '\\');
 
-    if (projectPathStr.substr(projectPathStr.length() - 1) != "\\") projectPathStr += "\\";
+    path relativePath(projectPathStr);
+    relativePath.remove_filename();
 
-    if (DirectoryExists(projectPath)) {
-        if (FileExists((projectPathStr + "project.ray").c_str())) {
-            static char projectPathText[2048] = { 0 };
-            sprintf(projectPathText, "%s", projectPathStr.c_str());
-            projectDir = projectPathText;
+    if (DirectoryExists(relativePath.string().c_str())) {
+        if (FileExists((relativePath.string() + "\\project.ray").c_str())) {
+            path absolutePath = canonical(relativePath);
+
+            IsProjectLoaded = true;
+            projectDir = absolutePath.string();
             return true;
         }
     }
