@@ -9,17 +9,21 @@ using namespace Editor;
 bool dialogOpenProjectOpen;
 ImFileDialogInfo dialogOpenProjectInfo;
 
+void SelectProjectDialog();
+
 void ToolbarDock::DrawWindow() {
     if (ImGui::BeginMenuBar())
     {
+        if ((IsKeyDown(KEY_LEFT_CONTROL) & IsKeyDown(KEY_LEFT_SHIFT) && IsKeyPressed(KEY_O)) && !dialogOpenProjectOpen)
+        {
+            SelectProjectDialog();
+        }
+
         if (ImGui::BeginMenu("File"))
         {
             if (ImGui::MenuItem("Open Project", "CTRL+SHIFT+O") && !dialogOpenProjectOpen)
             {
-                dialogOpenProjectOpen = true;
-                dialogOpenProjectInfo.type = ImGuiFileDialogType_OpenFile;
-                dialogOpenProjectInfo.title = "Select Project File";
-                dialogOpenProjectInfo.directoryPath = std::filesystem::current_path();
+                SelectProjectDialog();
             }
 
             if (ImGui::MenuItem("Exit", "Alt+F4")) Editor::Application::quit = true;
@@ -39,4 +43,11 @@ void ToolbarDock::DrawWindow() {
 
         ImGui::EndMenuBar();
     }
+}
+
+void SelectProjectDialog() {
+    dialogOpenProjectOpen = true;
+    dialogOpenProjectInfo.type = ImGuiFileDialogType_OpenFile;
+    dialogOpenProjectInfo.title = "Select Project File";
+    dialogOpenProjectInfo.directoryPath = std::filesystem::current_path();
 }

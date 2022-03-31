@@ -16,6 +16,11 @@ int main(int argc, char *argv[]){
     SetTraceLogCallback(Log::TraceLog);
     SetConfigFlags(FLAG_MSAA_4X_HINT | FLAG_VSYNC_HINT | FLAG_WINDOW_RESIZABLE);
     InitWindow(screenWidth, screenHeight, Title.c_str());
+    Image icons[2] = {
+        LoadImage("data\\icons\\logo\\rayeditor_16x16.png"),
+        LoadImage("data\\icons\\logo\\rayeditor_32x32.png")
+    };
+    SetWindowIcon(icons, 2);
     SetWindowMinSize(screenWidth, screenHeight);
     rlImGuiSetup(true);
 

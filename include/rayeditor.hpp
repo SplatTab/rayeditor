@@ -41,7 +41,7 @@ namespace RayEditor {
     }
 
     namespace Editor {
-        #define EDITOR_VERSION "0.0.2"
+        #define EDITOR_VERSION "0.5.0"
 
         class Project {
             public:
@@ -81,13 +81,22 @@ namespace RayEditor {
         };
 
         class AssetDock : public Dock {
+            struct FileInfo {
+                std::string fileName;
+                Texture2D icon;
+                bool isSelected;
+                bool isDirectory;
+            };
+
             public:
 
                 static void DrawWindow();
+                static void CloseWindow();
+                static void RefreshFiles();
 
             private:
 
-                inline static std::vector<std::string> files;
+                inline static std::vector<FileInfo> files;
                 inline static char filterText[512] = { 0 };
         };
 
@@ -101,6 +110,7 @@ namespace RayEditor {
             public:
 
                 static void DrawDocks();
+                static void CloseDocks();
         };
     }
 }

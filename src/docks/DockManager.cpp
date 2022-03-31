@@ -15,3 +15,7 @@ void DockManager::DrawDocks() {
         AssetDock::DrawWindow();
     }
 }
+
+void DockManager::CloseDocks() {
+    AssetDock::CloseWindow();
+}

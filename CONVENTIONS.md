@@ -63,3 +63,7 @@ include\ Similar goes for include libaries should be put into a folder for that 
 
 folders\ Should be categorized based off features/namespaces such as imgui, raylib, editor, docks, utility.
 
+data\ Should include any type of data that isn't the program itself and should categorized based off what it is
+
+data\resources Should include regular resources such as images/templates(json, cpp etc) etc...
+
