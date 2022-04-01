@@ -3,7 +3,6 @@
 #include <algorithm>
 
 using namespace RayEditor;
-using namespace Editor;
 using namespace std::filesystem;
 
 /// <summary>

@@ -3,9 +3,6 @@
 #include <iostream>
 
 using namespace RayEditor;
-using namespace Utility;
-using namespace Docks;
-using namespace Editor;
 
 int main(int argc, char *argv[]){
     int screenWidth = 1280;
@@ -19,10 +16,10 @@ int main(int argc, char *argv[]){
     SetWindowMinSize(screenWidth, screenHeight);
     rlImGuiSetup(true);
 
-    // First argument is a directory path to a possible project.
+    // Argument 0 is the application name
     if (argc > 1)
     {
-        if (!Project::SetProjectDirectory(argv[1]))
+        if (!Project::SetProjectDirectory(argv[1])) // Argument one is a project directory to open
         {
             Log::Warning("Project could not be loaded check that this is a valid project directory with a project.ray file.");
         }
@@ -35,6 +32,12 @@ int main(int argc, char *argv[]){
     Log::Info("Welcome to " + Title); // Greetings!
 
     bool dockspaceActive;
+
+    //Create base docks
+    Docks::AssetDock assetDock;
+
+    // Make base docks active
+    Docks::DockManager::activeDocks.push_back(assetDock);
 
     while (!WindowShouldClose() && !Application::quit)
     {
@@ -60,11 +63,13 @@ int main(int argc, char *argv[]){
             ImGui::DockSpace(ImGui::GetID("Dockspace"), ImVec2(0.0f, 0.0f),  ImGuiDockNodeFlags_PassthruCentralNode);
             //_________________________________________________________________________________________________________________________________________________________________
 
-            ToolbarDock::DrawWindow();
+            Docks::ToolbarDock::DrawWindow(); // The top toolbar of the editor is made before dockspace starts so it can't be docked.
 
-            ImGui::End();
+            ImGui::End(); // Dockspace starts here.
 
-            if (dockspaceActive) DockManager::DrawDocks();
+            Docks::ConsoleDock::DrawWindow(); // Console dock is static and always visible.
+
+            if (dockspaceActive) Docks::DockManager::UpdateDocks(); // Regular docks/tools.
 
         rlImGuiEnd();
 
@@ -74,10 +79,12 @@ int main(int argc, char *argv[]){
     }
 
     // |De-Initialization|
-    //--------------------
+    //--------------------------------
 
+    Docks::DockManager::CloseDocks();
     rlImGuiShutdown();
     CloseWindow();
+    //--------------------------------
 
     return 0;
 }

@@ -4,7 +4,6 @@
 using namespace RayEditor;
 using namespace Docks;
 using namespace Utility;
-using namespace Editor;
 
 bool dialogOpenProjectOpen;
 ImFileDialogInfo dialogOpenProjectInfo;
@@ -26,7 +25,7 @@ void ToolbarDock::DrawWindow() {
                 SelectProjectDialog();
             }
 
-            if (ImGui::MenuItem("Exit", "Alt+F4")) Editor::Application::quit = true;
+            if (ImGui::MenuItem("Exit", "Alt+F4")) Application::quit = true;
             ImGui::EndMenu();
         }
 

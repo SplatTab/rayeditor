@@ -53,5 +53,5 @@ void ConsoleDock::DrawWindow() {
 /// </summary>
 /// <param name="logItem">The LogItem to be added to the logs.</param>
 void ConsoleDock::AddLog(LogItem logItem) {
-    ConsoleDock::logItems.push_back(logItem);
+    logItems.push_back(logItem);
 }
