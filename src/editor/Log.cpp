@@ -24,13 +24,13 @@ void Log::TraceLog(int logType, const char* text, va_list args) {
     item.logType = logType;
     switch (logType)
     {
-        default:            item.prefix = "[Log]"; break;
-        case LOG_TRACE:     item.prefix = "[Info]"; break;
-        case LOG_INFO:      item.prefix = "[Info]"; break;
-        case LOG_DEBUG:     item.prefix = "[Debug]"; break;
-        case LOG_WARNING:   item.prefix = "[Warning]"; break;
-        case LOG_ERROR:     item.prefix = "[Error]"; break;
-        case LOG_FATAL:     item.prefix = "[Fatal]"; break;
+        default:            item.prefix = "[Log]"; item.logColor = GRAY; break;
+        case LOG_TRACE:     item.prefix = "[Info]"; item.logColor = RAYWHITE; break;
+        case LOG_INFO:      item.prefix = "[Info]"; item.logColor = RAYWHITE; break;
+        case LOG_DEBUG:     item.prefix = "[Debug]"; item.logColor = SKYBLUE; break;
+        case LOG_WARNING:   item.prefix = "[Warning]"; item.logColor = YELLOW; break;
+        case LOG_ERROR:     item.prefix = "[Error]"; item.logColor = RED; break;
+        case LOG_FATAL:     item.prefix = "[Fatal]"; item.logColor = PINK; break;
     }
     vsprintf(logText, text, args);
     item.logText += logText;

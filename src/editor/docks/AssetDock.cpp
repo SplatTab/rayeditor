@@ -9,7 +9,7 @@ using namespace RLCommonUtils;
 using namespace std::filesystem;
 
 std::string currentProjectDirectory = Project::GetProjectDirectory();
-std::string activeRelativeLocation = "\\";
+std::string activeRelativeLocation;
 
 // Global Icons
 Texture2D folder;
@@ -18,7 +18,11 @@ Texture2D defaultFile;
 void AssetDock::StartWindow() {
     // Load icons
     folder = LoadTexture("data\\icons\\folder.png");
+    folder.width = 38;
+    folder.height = 48;
     defaultFile = LoadTexture("data\\icons\\defaultfile.png");
+    defaultFile.width = 36;
+    defaultFile.height = 48;
 }
 
 void AssetDock::DrawWindow() {
@@ -35,7 +39,7 @@ void AssetDock::DrawWindow() {
 
     if (Project::GetProjectDirectory() != currentProjectDirectory) {
         currentProjectDirectory = Project::GetProjectDirectory();
-        activeRelativeLocation = "\\";
+        activeRelativeLocation = "";
         RefreshFiles();
     }
 
@@ -48,6 +52,7 @@ void AssetDock::DrawWindow() {
     {
         RefreshFiles();
     }
+    ImGui::NewLine();
 
     std::string copyBuffer;
 
@@ -58,20 +63,51 @@ void AssetDock::DrawWindow() {
             if (StringUtils::stristr(file.fileName.c_str(), filterText) == nullptr)continue;
         }
 
+        ImGui::SameLine();
         if (rlImGuiImageButton(&file.icon))
         {
-            Log::Debug("File clicked");
-            file.isSelected = true;
+            if (file.isDirectory && file.isSelected)
+            {
+                if (file.fileName == "/..")
+                {
+                    activeRelativeLocation = activeRelativeLocation.substr(0, activeRelativeLocation.find_last_of('\\'));
+                    RefreshFiles();
+                }
+                else
+                {
+                    activeRelativeLocation += "\\" + file.fileName;
+                }
+            }
+            else
+            {
+                RefreshFiles();
+                file.isSelected = true;
+            }
         }
-        ImGui::TextColored(Conversion::RayColorToImguiColor(RAYWHITE), "%s", file.fileName.c_str());
-        if (copy)
-            copyBuffer += file.fileName + "\r\n";
+
+        if (copy) copyBuffer += file.fileName + "\r\n";
     }
 
-    if (copy)
+    for (auto& file : files)
     {
-        SetClipboardText(copyBuffer.c_str());
+        if (filterText[0] != '\0')
+        {
+            if (StringUtils::stristr(file.fileName.c_str(), filterText) == nullptr)continue;
+        }
+
+        ImGui::SameLine();
+
+        if (file.isSelected)
+        {
+            ImGui::TextColored(Conversion::RayColorToImguiColor(BLUE), "%s", file.fileName.c_str());
+        }
+        else
+        {
+            ImGui::TextColored(Conversion::RayColorToImguiColor(RAYWHITE), "%s", file.fileName.c_str());
+        }
     }
+
+    if (copy) SetClipboardText(copyBuffer.c_str());
     ImGui::End();
 }
 
@@ -87,21 +123,24 @@ void AssetDock::CloseWindow() {
 void AssetDock::RefreshFiles() {
     files.clear();
 
-    for (const auto & p : directory_iterator(Project::GetProjectDirectory()))
+    // Up one folder file.
+    FileInfo fileInfo;
+    fileInfo.icon = folder;
+    fileInfo.fileName = "/..";
+    fileInfo.isDirectory = true;
+    files.push_back(fileInfo);
+
+    for (const auto & p : directory_iterator(Project::GetProjectDirectory() + activeRelativeLocation))
     {
         FileInfo fileInfo;
         if (p.is_directory())
         {
             fileInfo.icon = folder;
-            fileInfo.icon.width = 38;
-            fileInfo.icon.height = 32;
             fileInfo.isDirectory = true;
         }
         else
         {
             fileInfo.icon = defaultFile;
-            fileInfo.icon.width = 32;
-            fileInfo.icon.height = 48;
         }
         fileInfo.fileName = p.path().filename().string();
 

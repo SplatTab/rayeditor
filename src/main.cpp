@@ -29,8 +29,6 @@ int main(int argc, char *argv[]){
         }
     }
 
-    Log::Info("Welcome to " + Title); // Greetings!
-
     bool dockspaceActive;
 
     //Create base docks
@@ -38,6 +36,8 @@ int main(int argc, char *argv[]){
 
     // Make base docks active
     Docks::DockManager::activeDocks.push_back(assetDock);
+
+    Log::Info("Welcome to " + Title); // Greetings!
 
     while (!WindowShouldClose() && !Application::quit)
     {

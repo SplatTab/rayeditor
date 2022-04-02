@@ -96,8 +96,8 @@ namespace RayEditor {
             struct FileInfo {
                 std::string fileName;
                 Texture2D icon;
-                bool isSelected;
-                bool isDirectory;
+                bool isSelected = false;
+                bool isDirectory = false;
             }; // A file info struct used to store file information.
 
             public:
