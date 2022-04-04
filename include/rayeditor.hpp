@@ -5,6 +5,7 @@
 #include <vector>
 #include <deque>
 #include <functional>
+#include <memory>
 
 namespace RayEditor {
 
@@ -98,7 +99,7 @@ namespace RayEditor {
                 void CloseWindow() override; // Unitialize the asset dock.
                 void RefreshFiles(); // Refreshes the files in the asset dock.
 
-            private:
+            protected:
 
                 std::vector<FileInfo> files; // A list of files in the asset dock.
                 char filterText[512] = { 0 }; // The text in the search bar to filter the files with stristr.
@@ -115,7 +116,7 @@ namespace RayEditor {
                 inline static int windowsOpen; // The number of open docks.
                 static void UpdateDocks(); // Draw all open docks.
                 static void CloseDocks(); // Unitialize all open docks.
-                inline static std::deque<std::reference_wrapper<Dock>> activeDocks; // A list of active docks.
+                inline static std::deque<std::unique_ptr<Dock>> activeDocks; // A list of active docks.
         }; // The dock manager handles all docks.
 
         class ToolbarDock {

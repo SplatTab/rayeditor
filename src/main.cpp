@@ -23,8 +23,7 @@ int main(int argc, char *argv[]){
 
     bool dockspaceActive;
 
-    Docks::AssetDock baseAssetDock;
-    Docks::DockManager::activeDocks.push_back(std::ref(baseAssetDock));
+    Docks::DockManager::activeDocks.push_back(std::make_unique<Docks::AssetDock>());
 
     Application editor;
     editor.onInit();

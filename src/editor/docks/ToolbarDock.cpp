@@ -8,8 +8,6 @@ ImFileDialogInfo dialogOpenProjectInfo;
 
 void SelectProjectDialog();
 
-AssetDock assetDock;
-
 void ToolbarDock::DrawWindow() {
     if (ImGui::BeginMenuBar())
     {
@@ -24,7 +22,7 @@ void ToolbarDock::DrawWindow() {
         if (ImGui::BeginMenu("View"))
         {
             if (ImGui::MenuItem("Asset Manager")) {
-                DockManager::activeDocks.push_back(std::ref(assetDock));
+                DockManager::activeDocks.push_back(std::make_unique<AssetDock>());
             }
             ImGui::EndMenu();
         }
