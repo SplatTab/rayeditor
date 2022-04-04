@@ -2,23 +2,22 @@
 
 using namespace RayEditor::Docks;
 
-int windowsOpen;
-
 /// <summary>
 /// Draws and handles docks/menus UI.
 /// </summary>
 void DockManager::UpdateDocks() {
+    int index = 0;
     for (Dock& dock : activeDocks)
     {
+        index++;
         if (!dock.isInitialized)
         {
             windowsOpen++;
-            dock.id = windowsOpen;
             dock.StartWindow();
             dock.isInitialized = true;
         }
 
-        dock.DrawWindow();
+        dock.DrawWindow(index);
     }
 }
 

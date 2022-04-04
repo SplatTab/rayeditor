@@ -3,6 +3,7 @@
 #include <imgui.h>
 #include <string>
 #include <vector>
+#include <deque>
 #include <functional>
 
 namespace RayEditor {
@@ -33,16 +34,6 @@ namespace RayEditor {
         }
     } // The namespace utitlity contains a set of utilities to make you're life easier.
 
-    class Log {
-        public:
-
-            static void Info(std::string logText); // Logs a info message to the console dock.
-            static void Debug(std::string logText); // Logs a debug message to the console dock.
-            static void Warning(std::string logText); // Logs a warning message to the console dock.
-            static void Error(std::string logText); // Logs a error message to the console dock.
-            static void TraceLog(int logType, const char *text, va_list args); // Logs a message to the console dock.
-    }; // A class for logging messages to the console dock for debugging purposes.
-
     class Project {
         public:
 
@@ -55,19 +46,17 @@ namespace RayEditor {
             inline static std::string projectDir; // The modifiable active project directory this should not be manually set.
     }; // A class for managing the current project and it's directories.
 
-    class Application {
+    class Log {
         public:
 
-            inline static bool quit; // Is the editor quitting?
-    }; // A class for managing the internal editor.
+            static void Info(std::string logText); // Logs a info message to the console dock.
+            static void Debug(std::string logText); // Logs a debug message to the console dock.
+            static void Warning(std::string logText); // Logs a warning message to the console dock.
+            static void Error(std::string logText); // Logs a error message to the console dock.
+            static void TraceLog(int logType, const char *text, va_list args); // Logs a message to the console dock.
+    }; // A class for logging messages to the console dock for debugging purposes.
 
     namespace Docks {
-
-        class ToolbarDock {
-            public:
-
-                static void DrawWindow(); // Draw's the toolbar dock.
-        }; // The top bar of the editor (static).
 
         class ConsoleDock {
             public:
@@ -87,11 +76,10 @@ namespace RayEditor {
                 virtual ~Dock() = default; // Destructor.
 
                 virtual void StartWindow() {}; // Initialize you're dock window.
-                virtual void DrawWindow() {}; // Draw you're dock window.
+                virtual void DrawWindow(int dockID) {}; // Draw you're dock window.
                 virtual void CloseWindow() {}; // Unitialize you're dock window.
                 bool isInitialized = false; // Is the dock initialized?
                 bool open = true; // Is the dock open?
-                int id = 0; // The id of the dock.
         }; // A base class for all docks.
 
         class AssetDock : public Dock {
@@ -106,7 +94,7 @@ namespace RayEditor {
             public:
 
                 void StartWindow() override; // Initialize the asset dock window.
-                void DrawWindow() override; // Draw's the asset dock.
+                void DrawWindow(int dockID) override; // Draw's the asset dock.
                 void CloseWindow() override; // Unitialize the asset dock.
                 void RefreshFiles(); // Refreshes the files in the asset dock.
 
@@ -124,9 +112,31 @@ namespace RayEditor {
         class DockManager {
             public:
 
+                inline static int windowsOpen; // The number of open docks.
                 static void UpdateDocks(); // Draw all open docks.
                 static void CloseDocks(); // Unitialize all open docks.
-                inline static std::vector<std::reference_wrapper<Dock>> activeDocks; // A list of active docks.
+                inline static std::deque<std::reference_wrapper<Dock>> activeDocks; // A list of active docks.
         }; // The dock manager handles all docks.
+
+        class ToolbarDock {
+            public:
+                struct MenuItem {
+                    std::string container;
+                    std::string name;
+                    std::function<void()> onClick;
+                }; // A menu item struct used to store menu items.
+
+                static void DrawWindow(); // Draw's the toolbar dock.
+                inline static std::vector<MenuItem> menuItems; // A list of menu items.
+        }; // The top bar of the editor (static).
     }
+
+    class Application {
+        public:
+
+            virtual ~Application() = default; // Destructor.
+
+            virtual void onInit() {}; // Called when the application is initialized.
+            inline static bool quit; // Is the editor quitting?
+    }; // A class for managing/hooking onto the internal editor.
 }

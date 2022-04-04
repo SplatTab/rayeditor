@@ -18,9 +18,9 @@ void AssetDock::StartWindow() {
     defaultFile.height = 84;
 }
 
-void AssetDock::DrawWindow() {
+void AssetDock::DrawWindow(int dockID) {
     if (!open) {
-        DockManager::activeDocks.erase(DockManager::activeDocks.begin() + (id - 1));
+        DockManager::activeDocks.erase(DockManager::activeDocks.begin() + (dockID));
         return;
     }
 
@@ -29,6 +29,7 @@ void AssetDock::DrawWindow() {
     if (Project::GetProjectDirectory() != currentProjectDirectory) {
         currentProjectDirectory = Project::GetProjectDirectory();
         activeRelativeLocation = "";
+        prevRelativeLocation = "0";
     }
 
     if (prevRelativeLocation != activeRelativeLocation) {
@@ -36,7 +37,7 @@ void AssetDock::DrawWindow() {
         RefreshFiles();
     }
 
-    ImGui::Begin(("Asset Manager##" + std::to_string(id)).c_str(), &open);
+    ImGui::Begin(("Asset Manager##" + std::to_string(dockID)).c_str(), &open);
 
     ImGui::SameLine();
     ImGui::SetNextItemWidth(200);
@@ -71,7 +72,7 @@ void AssetDock::DrawWindow() {
         ImGui::TableNextColumn();
 
         if (ImGui::CalcTextSize(file.fileName.c_str()).x > file.icon.width) ImGui::TableHeader((file.fileName.substr(0, 7) + "..").c_str());
-        else ImGui::TableHeader(file.fileName.substr(0, 7).c_str());
+        else ImGui::TableHeader(file.fileName.substr(0, 8).c_str());
 
         if (rlImGuiImageButton(&file.icon))
         {

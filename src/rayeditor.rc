@@ -9,13 +9,13 @@ BEGIN
     //BLOCK "080904E4"  // English UK
     BLOCK "040904E4"    // English US
     BEGIN
-      VALUE "CompanyName", "RayEditor by SplatTab"
-      VALUE "FileDescription", "A simple and easy-to-use editor to enjoy videogames development with the RayLib Libary"
+      VALUE "CompanyName", "rayeditor by SplatTab"
+      VALUE "FileDescription", "Ray Editor"
       VALUE "FileVersion", "0.5.0"
-      VALUE "InternalName", "RayEditor"
+      VALUE "InternalName", "rayeditor"
       VALUE "LegalCopyright", "Copyright (c) 2022 (@SplatTab)"
       VALUE "OriginalFilename", "rayeditor.exe"
-      VALUE "ProductName", "RayEditor"
+      VALUE "ProductName", "rayeditor"
       VALUE "ProductVersion", "0.5.0"
     END
   END

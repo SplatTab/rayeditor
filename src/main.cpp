@@ -23,11 +23,11 @@ int main(int argc, char *argv[]){
 
     bool dockspaceActive;
 
-    //Create base docks
-    Docks::AssetDock assetDock;
+    Docks::AssetDock baseAssetDock;
+    Docks::DockManager::activeDocks.push_back(std::ref(baseAssetDock));
 
-    // Make base docks active
-    Docks::DockManager::activeDocks.push_back(assetDock);
+    Application editor;
+    editor.onInit();
 
     Log::Info("Welcome to " + Title); // Greetings!
 
@@ -67,7 +67,7 @@ int main(int argc, char *argv[]){
 
         rlImGuiEnd();
 
-            DrawFPS(0, GetScreenHeight() - 20);
+            DrawFPS(GetScreenWidth() - 100, 20);
 
         EndDrawing();
     }
