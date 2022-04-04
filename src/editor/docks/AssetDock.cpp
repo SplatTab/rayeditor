@@ -9,11 +9,11 @@ using namespace Utility::RLCommonUtils;
 using namespace std::filesystem;
 
 void AssetDock::StartWindow() {
-    folder = LoadTexture("data\\icons\\folder.png");
+    folder = LoadTexture("data\\resources\\icons\\folder.png");
     folder.width = 74;
     folder.height = 84;
 
-    defaultFile = LoadTexture("data\\icons\\defaultfile.png");
+    defaultFile = LoadTexture("data\\resources\\icons\\defaultfile.png");
     defaultFile.width = 72;
     defaultFile.height = 84;
 }

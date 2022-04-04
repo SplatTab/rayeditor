@@ -56,15 +56,12 @@ Header Files | ALL_LOWER_CASE | `rayeditor.hpp`, `raylib.h`
 C/C++ Files | TitleCase | `ConsoleDock.cpp`(Only exception main.cpp)
 Folders | ALL_LOWER_CASE | `src\`
 ### Folders:
-src\ Should only contain source code that is is going to be modified and not belonging to a libary!
+New folders should be made when necessary. Ex: Namespaces, Libaries, Modules, Inherited Classes.
 
-lib\ opposite of src\ Should only contain source code/compiled libs that relate to other libaries and should be put in a folder for that libary.
+src\ -> Contains all the source code for the project.
 
-include\ Similar goes for include libaries should be put into a folder for that libary.
+lib\ -> Contains all the libraries for the project.
 
-folders\ Should be categorized based off features/namespaces such as imgui, raylib, editor, docks, utility.
+include\ -> Contains all the headers for the project.
 
-data\ Should include any type of data that isn't the program itself and should categorized based off what it is
-
-data\resources Should include regular resources such as images/templates(json, cpp etc) etc...
-
+data\ -> Contains all the data for the compiled application. Ex: General Icons(resources/icons), App Logo(resources/logo)
