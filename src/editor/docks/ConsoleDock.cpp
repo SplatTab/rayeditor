@@ -14,12 +14,11 @@ void ConsoleDock::DrawWindow() {
     ImGui::SameLine();
 
     bool copy = false;
-    if(ImGui::Button("Copy"))
-        copy = true;
+    if(ImGui::Button("Copy")) copy = true;
 
     ImGui::SameLine();
-    if (ImGui::Button("Clear"))
-        logItems.clear();
+
+    if (ImGui::Button("Clear")) logItems.clear();
 
     std::string copyBuffer;
 
@@ -27,9 +26,9 @@ void ConsoleDock::DrawWindow() {
     {
         if (filterText[0] != '\0')
         {
-            if (StringUtils::stristr(line.logText.c_str(), filterText) == nullptr)
-                continue;
+            if (StringUtils::stristr(line.logText.c_str(), filterText) == nullptr) continue;
         }
+
         ImGui::TextColored(Conversion::RayColorToImguiColor(line.logColor), "%s", line.prefix.c_str());
         ImGui::SameLine();
         ImGui::TextUnformatted(line.logText.c_str());

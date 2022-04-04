@@ -29,9 +29,7 @@
 
 #include "rayeditor.hpp"
 
-using namespace RayEditor;
-using namespace Utility;
-using namespace RLCommonUtils;
+using namespace RayEditor::Utility::RLCommonUtils;
 
 char* StringUtils::stristr(const char* str1, const char* str2)
 {

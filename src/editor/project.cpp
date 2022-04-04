@@ -20,9 +20,7 @@ std::string Project::GetProjectDirectory() {
 /// <returns>If the action was successful</returns>
 bool Project::SetProjectDirectory(const char *projectPath) {
 
-    if (projectPath == NULL) {
-        return false;
-    }
+    if (projectPath == NULL) return false;
 
     std::string projectPathStr(projectPath);
     std::replace(projectPathStr.begin(), projectPathStr.end(), '/', '\\');

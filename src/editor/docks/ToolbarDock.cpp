@@ -1,9 +1,7 @@
 #include "rayeditor.hpp"
-#include "imgui_filedialog.h"
+#include <imgui_filedialog.h>
 
-using namespace RayEditor;
-using namespace Docks;
-using namespace Utility;
+using namespace RayEditor::Docks;
 
 bool dialogOpenProjectOpen;
 ImFileDialogInfo dialogOpenProjectInfo;

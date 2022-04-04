@@ -39,7 +39,8 @@ int main()
         return false;
     } // Doesn't count so put brackets
 
-    if (condition) {
+    if (condition)
+    {
         if (condition) return true; // Counts
     } // One brackets
 }

@@ -90,6 +90,8 @@ namespace RayEditor {
                 virtual void DrawWindow() {}; // Draw you're dock window.
                 virtual void CloseWindow() {}; // Unitialize you're dock window.
                 bool isInitialized = false; // Is the dock initialized?
+                bool open = true; // Is the dock open?
+                int id = 0; // The id of the dock.
         }; // A base class for all docks.
 
         class AssetDock : public Dock {
@@ -112,6 +114,11 @@ namespace RayEditor {
 
                 std::vector<FileInfo> files; // A list of files in the asset dock.
                 char filterText[512] = { 0 }; // The text in the search bar to filter the files with stristr.
+                std::string currentProjectDirectory; // The current project directory.
+                std::string prevRelativeLocation; // The last unupdated relative location of the asset dock.
+                std::string activeRelativeLocation; // The active relative location of the asset dock.
+                inline static Texture2D folder;
+                inline static Texture2D defaultFile;
         }; // A dock for navigating project files.
 
         class DockManager {

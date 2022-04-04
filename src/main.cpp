@@ -1,6 +1,5 @@
-#include <rlImGui.h>
 #include "rayeditor.hpp"
-#include <iostream>
+#include <rlImGui.h>
 
 using namespace RayEditor;
 
@@ -9,33 +8,28 @@ int main(int argc, char *argv[]){
     int screenHeight = 800;
     const std::string Title("RayEditor V" + std::string(EDITOR_VERSION));
 
-    // Some basic setup stuff
     SetTraceLogCallback(Log::TraceLog);
     SetConfigFlags(FLAG_MSAA_4X_HINT | FLAG_VSYNC_HINT | FLAG_WINDOW_RESIZABLE);
     InitWindow(screenWidth, screenHeight, Title.c_str());
     SetWindowMinSize(screenWidth, screenHeight);
     rlImGuiSetup(true);
 
-    // Argument 0 is the application name
+    // Arg 0: Application name, Arg 1: Project directory
     if (argc > 1)
     {
-        if (!Project::SetProjectDirectory(argv[1])) // Argument one is a project directory to open
-        {
-            Log::Warning("Project could not be loaded check that this is a valid project directory with a project.ray file.");
-        }
-        else
-        {
-            Log::Info("Project loaded: " + std::string(Project::GetProjectDirectory()));
-        }
+        if (!Project::SetProjectDirectory(argv[1])) Log::Warning("Project could not be loaded check that this is a valid project directory with a project.ray file.");
+        else Log::Info("Project loaded: " + std::string(Project::GetProjectDirectory()));
     }
 
     bool dockspaceActive;
 
     //Create base docks
     Docks::AssetDock assetDock;
+    Docks::AssetDock assetDock2;
 
     // Make base docks active
     Docks::DockManager::activeDocks.push_back(assetDock);
+    Docks::DockManager::activeDocks.push_back(assetDock2);
 
     Log::Info("Welcome to " + Title); // Greetings!
 
@@ -63,13 +57,15 @@ int main(int argc, char *argv[]){
             ImGui::DockSpace(ImGui::GetID("Dockspace"), ImVec2(0.0f, 0.0f),  ImGuiDockNodeFlags_PassthruCentralNode);
             //_________________________________________________________________________________________________________________________________________________________________
 
-            Docks::ToolbarDock::DrawWindow(); // The top toolbar of the editor is made before dockspace starts so it can't be docked.
+            // NOTE: The top toolbar is made before dockspace finishes drawing so it can't be docked.
+            Docks::ToolbarDock::DrawWindow();
 
-            ImGui::End(); // Dockspace starts here.
+            ImGui::End();
 
-            Docks::ConsoleDock::DrawWindow(); // Console dock is static and always visible.
+            // NOTE: Console Dock isn't made via DockManager 1: Do you really need two consoles 2: Logs would need to be sent to every console.
+            Docks::ConsoleDock::DrawWindow();
 
-            if (dockspaceActive) Docks::DockManager::UpdateDocks(); // Regular docks/tools.
+            if (dockspaceActive) Docks::DockManager::UpdateDocks();
 
         rlImGuiEnd();
 

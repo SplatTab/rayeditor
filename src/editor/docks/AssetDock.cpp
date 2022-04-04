@@ -5,16 +5,8 @@
 
 using namespace RayEditor;
 using namespace Docks;
-using namespace Utility;
-using namespace RLCommonUtils;
+using namespace Utility::RLCommonUtils;
 using namespace std::filesystem;
-
-std::string currentProjectDirectory = Project::GetProjectDirectory();
-std::string prevRelativeLocation;
-std::string activeRelativeLocation;
-
-Texture2D folder;
-Texture2D defaultFile;
 
 void AssetDock::StartWindow() {
     folder = LoadTexture("data\\icons\\folder.png");
@@ -27,13 +19,16 @@ void AssetDock::StartWindow() {
 }
 
 void AssetDock::DrawWindow() {
+    if (!open) {
+        DockManager::activeDocks.erase(DockManager::activeDocks.begin() + (id - 1));
+        return;
+    }
+
     if (!Project::IsProjectLoaded) return;
 
     if (Project::GetProjectDirectory() != currentProjectDirectory) {
         currentProjectDirectory = Project::GetProjectDirectory();
-        prevRelativeLocation = "";
         activeRelativeLocation = "";
-        RefreshFiles();
     }
 
     if (prevRelativeLocation != activeRelativeLocation) {
@@ -41,7 +36,7 @@ void AssetDock::DrawWindow() {
         RefreshFiles();
     }
 
-    ImGui::Begin("Asset Manager");
+    ImGui::Begin(("Asset Manager##" + std::to_string(id)).c_str(), &open);
 
     ImGui::SameLine();
     ImGui::SetNextItemWidth(200);
@@ -49,14 +44,11 @@ void AssetDock::DrawWindow() {
     ImGui::SameLine();
 
     bool copy = false;
-
-    if(ImGui::Button("Copy"))
-        copy = true;
+    if(ImGui::Button("Copy")) copy = true;
 
     ImGui::SameLine();
 
-    if (ImGui::Button("Refresh"))
-        RefreshFiles();
+    if (ImGui::Button("Refresh")) RefreshFiles();
 
     ImGui::Text(("Path: " + currentProjectDirectory + activeRelativeLocation).c_str());
 
@@ -72,8 +64,9 @@ void AssetDock::DrawWindow() {
 
     for (auto& file : files)
     {
-        if (filterText[0] != '\0')
-            if (StringUtils::stristr(file.fileName.c_str(), filterText) == nullptr)continue;
+        if (filterText[0] != '\0') {
+            if (StringUtils::stristr(file.fileName.c_str(), filterText) == nullptr) continue;
+        }
 
         ImGui::TableNextColumn();
 
