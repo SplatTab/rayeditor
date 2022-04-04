@@ -25,11 +25,9 @@ int main(int argc, char *argv[]){
 
     //Create base docks
     Docks::AssetDock assetDock;
-    Docks::AssetDock assetDock2;
 
     // Make base docks active
     Docks::DockManager::activeDocks.push_back(assetDock);
-    Docks::DockManager::activeDocks.push_back(assetDock2);
 
     Log::Info("Welcome to " + Title); // Greetings!
 
