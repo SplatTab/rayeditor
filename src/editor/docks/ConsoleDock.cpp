@@ -11,19 +11,15 @@ void ConsoleDock::DrawWindow() {
     ImGui::SameLine();
     ImGui::SetNextItemWidth(200);
     ImGui::InputTextWithHint("###filterText", "Filter", filterText, 512);
-
     ImGui::SameLine();
+
     bool copy = false;
     if(ImGui::Button("Copy"))
-    {
         copy = true;
-    }
 
     ImGui::SameLine();
     if (ImGui::Button("Clear"))
-    {
         logItems.clear();
-    }
 
     std::string copyBuffer;
 
@@ -37,14 +33,11 @@ void ConsoleDock::DrawWindow() {
         ImGui::TextColored(Conversion::RayColorToImguiColor(line.logColor), "%s", line.prefix.c_str());
         ImGui::SameLine();
         ImGui::TextUnformatted(line.logText.c_str());
-        if (copy)
-            copyBuffer += line.prefix + line.logText + "\r\n";
+
+        if (copy) copyBuffer += line.prefix + line.logText + "\r\n";
     }
 
-    if (copy)
-    {
-        SetClipboardText(copyBuffer.c_str());
-    }
+    if (copy) SetClipboardText(copyBuffer.c_str());
     ImGui::End();
 }
 
