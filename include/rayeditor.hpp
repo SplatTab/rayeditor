@@ -95,6 +95,7 @@ namespace RayEditor {
         class AssetDock : public Dock {
             struct FileInfo {
                 std::string fileName;
+                std::string fileExtension;
                 Texture2D icon;
                 bool isSelected = false;
                 bool isDirectory = false;
