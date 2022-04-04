@@ -248,7 +248,7 @@ static void rlImGuiRenderTriangles(unsigned int count, int indexStart, const ImV
 {
     if (count < 3)
         return;
-    
+
     Texture* texture = (Texture*)texturePtr;
 
     unsigned int textureId = (texture == nullptr) ? 0 : texture->id;
@@ -258,7 +258,7 @@ static void rlImGuiRenderTriangles(unsigned int count, int indexStart, const ImV
 
     for (unsigned int i = 0; i <= (count - 3); i += 3)
     {
-        if(rlCheckRenderBatchLimit(3)) 
+        if(rlCheckRenderBatchLimit(3))
         {
             rlBegin(RL_TRIANGLES);
             rlSetTexture(textureId);
@@ -300,7 +300,7 @@ static void rlRenderData(ImDrawData* data)
             if (cmd.UserCallback != nullptr)
             {
                 cmd.UserCallback(commandList, &cmd);
-  
+
                 continue;
             }
 
@@ -436,11 +436,7 @@ void rlImGuiImage(const Texture *image)
 }
 
 bool rlImGuiImageButton(const Texture *image) {
-    if (ImGui::ImageButton((ImTextureID)image, ImVec2(float(image->width), float(image->height))))
-    {
-        return true;
-    }
-    return false;
+    return ImGui::ImageButton((ImTextureID)image, ImVec2(float(image->width), float(image->height)));
 }
 
 void rlImGuiImageSize(const Texture *image, int width, int height)
