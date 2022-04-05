@@ -65,7 +65,7 @@ namespace RayEditor {
 
             inline static Texture2D folder; // The folder icon.
             inline static Texture2D defaultFile; // The default file icon.
-    }; // A class for managing cached editor icons.
+    }; // A class for managing and getting cached editor icons.
 
     namespace Docks {
 

@@ -88,6 +88,9 @@ void AssetDock::DrawWindow(int dockID) {
     ImGui::End();
 }
 
+///<summary>
+/// Refreshes the current files with the active directory's files.
+///</summary>
 void AssetDock::RefreshFiles() {
     files.clear();
 

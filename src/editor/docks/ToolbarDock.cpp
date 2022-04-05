@@ -39,16 +39,14 @@ void ToolbarDock::DrawWindow() {
 
     if (ImGui::FileDialog(&dialogOpenProjectOpen, &dialogOpenProjectInfo))
     {
-        if (Project::SetProjectDirectory(dialogOpenProjectInfo.resultPath.string().c_str())) {
-            Log::Info("Project loaded: " + std::string(Project::GetProjectDirectory()));
-        }
-        else
-        {
-            Log::Warning("Project could not be loaded check that this is a valid project directory with a project.ray file.");
-        }
+        if (Project::SetProjectDirectory(dialogOpenProjectInfo.resultPath.string().c_str())) Log::Info("Project loaded: " + std::string(Project::GetProjectDirectory()));
+        else Log::Warning("Project could not be loaded check that this is a valid project directory with a project.ray file.");
     }
 }
 
+///<summary>
+/// Opens a file dialog to select a project file.
+///</summary>
 void SelectProjectDialog() {
     dialogOpenProjectOpen = true;
     dialogOpenProjectInfo.type = ImGuiFileDialogType_OpenFile;
