@@ -22,7 +22,7 @@ int main(int argc, char *argv[]){
         else Log::Info("Project loaded: " + std::string(Project::GetProjectDirectory()));
     }
 
-    Docks::DockManager::activeDocks.push_back(std::make_unique<Docks::AssetDock>());
+    Docks::DockManager::activeDocks.push_back(std::make_unique<Docks::AssetManager>());
 
     Application editor;
     editor.onInit();
@@ -55,12 +55,12 @@ int main(int argc, char *argv[]){
             //_________________________________________________________________________________________________________________________________________________________________
 
             // NOTE: The top toolbar is made before dockspace finishes drawing so it can't be docked.
-            Docks::ToolbarDock::DrawWindow();
+            Docks::ToolbarMenu::DrawWindow();
 
             ImGui::End();
 
             // NOTE: Console Dock isn't made via DockManager 1: Do you really need two consoles 2: Logs would need to be sent to every console.
-            Docks::ConsoleDock::DrawWindow();
+            Docks::Console::DrawWindow();
 
             if (dockspaceActive) Docks::DockManager::UpdateDocks();
 

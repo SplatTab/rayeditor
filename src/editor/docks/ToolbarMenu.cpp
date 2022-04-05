@@ -8,7 +8,7 @@ ImFileDialogInfo dialogOpenProjectInfo;
 
 void SelectProjectDialog();
 
-void ToolbarDock::DrawWindow() {
+void ToolbarMenu::DrawWindow() {
     if (ImGui::BeginMenuBar())
     {
         if (ImGui::BeginMenu("File"))
@@ -21,7 +21,8 @@ void ToolbarDock::DrawWindow() {
 
         if (ImGui::BeginMenu("View"))
         {
-            if (ImGui::MenuItem("Asset Manager") && Project::IsProjectLoaded) DockManager::activeDocks.push_back(std::make_unique<AssetDock>());
+            if (ImGui::MenuItem("Asset Manager") && Project::IsProjectLoaded) DockManager::activeDocks.push_back(std::make_unique<AssetManager>());
+            if (ImGui::MenuItem("Scene View") && Project::IsProjectLoaded) DockManager::activeDocks.push_back(std::make_unique<SceneView>());
             ImGui::EndMenu();
         }
 

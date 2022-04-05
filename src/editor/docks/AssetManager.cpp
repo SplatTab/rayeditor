@@ -8,7 +8,7 @@ using namespace Docks;
 using namespace Utility::RLCommonUtils;
 using namespace std::filesystem;
 
-void AssetDock::DrawWindow(int dockID) {
+void AssetManager::DrawWindow(int dockID) {
     if (!open) {
         DockManager::activeDocks.erase(DockManager::activeDocks.begin() + (dockID));
         return;
@@ -91,7 +91,7 @@ void AssetDock::DrawWindow(int dockID) {
 ///<summary>
 /// Refreshes the current files with the active directory's files.
 ///</summary>
-void AssetDock::RefreshFiles() {
+void AssetManager::RefreshFiles() {
     files.clear();
 
     FileInfo fileInfo;

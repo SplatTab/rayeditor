@@ -7,28 +7,28 @@ using namespace Docks;
 /// Logs a info message to the editor log.
 ///</summary>
 void Log::Info(std::string logText) {
-    ConsoleDock::AddLog(LogItem{ "[Info]", logText, RAYWHITE, 0 });
+    Console::AddLog(LogItem{ "[Info]", logText, RAYWHITE, 0 });
 }
 
 ///<summary>
 /// Logs a debug message to the editor log.
 ///</summary>
 void Log::Debug(std::string logText) {
-    ConsoleDock::AddLog(LogItem{ "[Debug]", logText, SKYBLUE, 1 });
+    Console::AddLog(LogItem{ "[Debug]", logText, SKYBLUE, 1 });
 }
 
 ///<summary>
 /// Logs a warning message to the editor log.
 ///</summary>
 void Log::Warning(std::string logText) {
-    ConsoleDock::AddLog(LogItem{ "[Warning]", logText, YELLOW, 2 });
+    Console::AddLog(LogItem{ "[Warning]", logText, YELLOW, 2 });
 }
 
 ///<summary>
 /// Logs a error message to the editor log.
 ///</summary>
 void Log::Error(std::string logText) {
-    ConsoleDock::AddLog(LogItem{ "[Error]", logText, RED, 3 });
+    Console::AddLog(LogItem{ "[Error]", logText, RED, 3 });
 }
 
 ///<summary>
@@ -50,5 +50,5 @@ void Log::TraceLog(int logType, const char* text, va_list args) {
     }
     vsprintf(logText, text, args);
     item.logText += logText;
-    ConsoleDock::AddLog(item);
+    Console::AddLog(item);
 }

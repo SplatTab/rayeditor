@@ -38,8 +38,8 @@ namespace RayEditor {
     class Project {
         public:
 
-            static std::string GetProjectDirectory(); // Get's the active project directory.
-            static bool SetProjectDirectory(const char *projectPath); // Set's the active project directory.
+            static std::string GetProjectDirectory(); // Gets the active project directory.
+            static bool SetProjectDirectory(const char *projectPath); // Sets the active project directory.
             inline static bool IsProjectLoaded; // Is a project loaded?
 
         private:
@@ -69,10 +69,10 @@ namespace RayEditor {
 
     namespace Docks {
 
-        class ConsoleDock {
+        class Console {
             public:
 
-                static void DrawWindow(); // Draw's the console dock.
+                static void DrawWindow(); // Draws the console dock.
                 static void AddLog(LogItem logItem); // Adds a log item to the console dock.
 
             private:
@@ -93,7 +93,7 @@ namespace RayEditor {
                 bool open = true; // Is the dock open?
         }; // A base class for all docks.
 
-        class AssetDock : public Dock {
+        class AssetManager : public Dock {
             struct FileInfo {
                 std::string fileName;
                 std::string fileExtension;
@@ -104,7 +104,7 @@ namespace RayEditor {
 
             public:
 
-                void DrawWindow(int dockID) override; // Draw's the asset dock.
+                void DrawWindow(int dockID) override; // Draws the asset dock.
                 void RefreshFiles(); // Refreshes the files in the asset dock.
 
             private:
@@ -116,6 +116,18 @@ namespace RayEditor {
                 std::string activeRelativeLocation; // The active relative location of the asset dock.
         }; // A dock for navigating project files.
 
+        class SceneView : public Dock {
+            public:
+
+                void StartWindow() override; // Setups the scene view dock.
+                void DrawWindow(int dockID) override; // Draws the scene view dock.
+                void UpdateSceneView(); // Updates the scene rendered in the scene view dock.
+
+            private:
+
+                RenderTexture ViewTexture; // The render texture used to render the raylib view.
+        }; // A dock for viewing the current active scene.
+
         class DockManager {
             public:
 
@@ -125,15 +137,16 @@ namespace RayEditor {
                 inline static std::deque<std::unique_ptr<Dock>> activeDocks; // A list of active docks.
         }; // The dock manager handles all docks.
 
-        class ToolbarDock {
+        class ToolbarMenu {
             public:
+
                 struct MenuItem {
                     std::string container;
                     std::string name;
                     std::function<void()> onClick;
                 }; // A menu item struct used to store menu items.
 
-                static void DrawWindow(); // Draw's the toolbar dock.
+                static void DrawWindow(); // Draws the toolbar dock.
                 inline static std::vector<MenuItem> menuItems; // A list of menu items.
         }; // The top bar of the editor (static).
     }

@@ -5,7 +5,7 @@ using namespace Docks;
 using namespace Utility;
 using namespace RLCommonUtils;
 
-void ConsoleDock::DrawWindow() {
+void Console::DrawWindow() {
     ImGui::Begin("Console");
 
     ImGui::SameLine();
@@ -44,6 +44,6 @@ void ConsoleDock::DrawWindow() {
 /// Adds a log item to the console to be drawn.
 /// </summary>
 /// <param name="logItem">The LogItem to be added to the logs.</param>
-void ConsoleDock::AddLog(LogItem logItem) {
+void Console::AddLog(LogItem logItem) {
     logItems.push_back(logItem);
 }
