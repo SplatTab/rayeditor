@@ -1,4 +1,5 @@
 #include "rayeditor.hpp"
+#include "rrayc.hpp"
 #include <rlImGui.h>
 
 using namespace RayEditor;
@@ -24,9 +25,9 @@ int main(int argc, char *argv[]){
 
     Docks::DockManager::activeDocks.push_back(std::make_unique<Docks::AssetManager>());
 
-    Application editor;
-    editor.onInit();
     CachedIcons::LoadIcons();
+
+    RRayPatcher::EditorInit(Project::GetProjectDirectory());
 
     Log::Info("Welcome to " + Title); // Greetings!
 

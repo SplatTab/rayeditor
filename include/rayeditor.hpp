@@ -154,9 +154,6 @@ namespace RayEditor {
     class Application {
         public:
 
-            virtual ~Application() = default; // Destructor.
-
-            virtual void onInit() {}; // Called when the application is initialized.
             inline static bool quit; // Is the editor quitting?
     }; // A class for managing/hooking onto the internal editor.
 }
