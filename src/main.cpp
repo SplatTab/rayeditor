@@ -7,6 +7,7 @@ int main(int argc, char *argv[]){
     int screenWidth = 1280;
     int screenHeight = 800;
     const std::string Title("RayEditor V" + std::string(EDITOR_VERSION));
+    bool dockspaceActive;
 
     SetTraceLogCallback(Log::TraceLog);
     SetConfigFlags(FLAG_MSAA_4X_HINT | FLAG_VSYNC_HINT | FLAG_WINDOW_RESIZABLE);
@@ -21,12 +22,11 @@ int main(int argc, char *argv[]){
         else Log::Info("Project loaded: " + std::string(Project::GetProjectDirectory()));
     }
 
-    bool dockspaceActive;
-
     Docks::DockManager::activeDocks.push_back(std::make_unique<Docks::AssetDock>());
 
     Application editor;
     editor.onInit();
+    CachedIcons::LoadIcons();
 
     Log::Info("Welcome to " + Title); // Greetings!
 
@@ -75,6 +75,7 @@ int main(int argc, char *argv[]){
     //--------------------------------
 
     Docks::DockManager::CloseDocks();
+    CachedIcons::UnloadIcons();
     rlImGuiShutdown();
     CloseWindow();
     //--------------------------------

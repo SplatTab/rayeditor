@@ -57,6 +57,16 @@ namespace RayEditor {
             static void TraceLog(int logType, const char *text, va_list args); // Logs a message to the console dock.
     }; // A class for logging messages to the console dock for debugging purposes.
 
+    class CachedIcons {
+        public:
+
+            static void LoadIcons(); // Loads default editor icons.
+            static void UnloadIcons(); // Unloads default editor icons.
+
+            inline static Texture2D folder; // The folder icon.
+            inline static Texture2D defaultFile; // The default file icon.
+    }; // A class for managing cached editor icons.
+
     namespace Docks {
 
         class ConsoleDock {
@@ -94,20 +104,17 @@ namespace RayEditor {
 
             public:
 
-                void StartWindow() override; // Initialize the asset dock window.
                 void DrawWindow(int dockID) override; // Draw's the asset dock.
                 void CloseWindow() override; // Unitialize the asset dock.
                 void RefreshFiles(); // Refreshes the files in the asset dock.
 
-            protected:
+            private:
 
                 std::vector<FileInfo> files; // A list of files in the asset dock.
                 char filterText[512] = { 0 }; // The text in the search bar to filter the files with stristr.
                 std::string currentProjectDirectory; // The current project directory.
                 std::string prevRelativeLocation; // The last unupdated relative location of the asset dock.
                 std::string activeRelativeLocation; // The active relative location of the asset dock.
-                inline static Texture2D folder;
-                inline static Texture2D defaultFile;
         }; // A dock for navigating project files.
 
         class DockManager {

@@ -8,16 +8,6 @@ using namespace Docks;
 using namespace Utility::RLCommonUtils;
 using namespace std::filesystem;
 
-void AssetDock::StartWindow() {
-    folder = LoadTexture("data\\resources\\icons\\folder.png");
-    folder.width = 74;
-    folder.height = 84;
-
-    defaultFile = LoadTexture("data\\resources\\icons\\defaultfile.png");
-    defaultFile.width = 72;
-    defaultFile.height = 84;
-}
-
 void AssetDock::DrawWindow(int dockID) {
     if (!open) {
         DockManager::activeDocks.erase(DockManager::activeDocks.begin() + (dockID));
@@ -99,8 +89,6 @@ void AssetDock::DrawWindow(int dockID) {
 }
 
 void AssetDock::CloseWindow() {
-    UnloadTexture(folder);
-    UnloadTexture(defaultFile);
     for (size_t i = 0; i < files.size(); i++) UnloadTexture(files[i].icon);
 }
 
@@ -108,7 +96,7 @@ void AssetDock::RefreshFiles() {
     files.clear();
 
     FileInfo fileInfo;
-    fileInfo.icon = folder;
+    fileInfo.icon = CachedIcons::folder;
     fileInfo.fileName = "..";
     fileInfo.fileExtension = "UpOneFolder\\//";
     fileInfo.isDirectory = true;
@@ -125,12 +113,12 @@ void AssetDock::RefreshFiles() {
     {
         if (p.is_directory())
         {
-            fileInfo.icon = folder;
+            fileInfo.icon = CachedIcons::folder;
             fileInfo.isDirectory = true;
         }
         else
         {
-            fileInfo.icon = defaultFile;
+            fileInfo.icon = CachedIcons::defaultFile;
         }
 
         std::string fileExtension = p.path().filename().extension().string();

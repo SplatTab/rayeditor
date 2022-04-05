@@ -21,9 +21,7 @@ void ToolbarDock::DrawWindow() {
 
         if (ImGui::BeginMenu("View"))
         {
-            if (ImGui::MenuItem("Asset Manager")) {
-                DockManager::activeDocks.push_back(std::make_unique<AssetDock>());
-            }
+            if (ImGui::MenuItem("Asset Manager") && Project::IsProjectLoaded) DockManager::activeDocks.push_back(std::make_unique<AssetDock>());
             ImGui::EndMenu();
         }
 
