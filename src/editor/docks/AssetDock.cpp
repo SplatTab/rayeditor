@@ -88,10 +88,6 @@ void AssetDock::DrawWindow(int dockID) {
     ImGui::End();
 }
 
-void AssetDock::CloseWindow() {
-    for (size_t i = 0; i < files.size(); i++) UnloadTexture(files[i].icon);
-}
-
 void AssetDock::RefreshFiles() {
     files.clear();
 

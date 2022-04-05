@@ -105,7 +105,6 @@ namespace RayEditor {
             public:
 
                 void DrawWindow(int dockID) override; // Draw's the asset dock.
-                void CloseWindow() override; // Unitialize the asset dock.
                 void RefreshFiles(); // Refreshes the files in the asset dock.
 
             private:
