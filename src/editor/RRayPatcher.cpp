@@ -3,6 +3,6 @@
 
 void RRayPatcher::EditorInit(std::string projectPath) {
     RayPatcher::Context context;
-    context.AddLibary((projectPath + "\\templibs\\libtest.dll").c_str());
+    context.AddLibary((projectPath + "\\templibs\\test.dll").c_str());
     context.RunFunctions("Init");
 }
