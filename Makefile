@@ -8,9 +8,8 @@ RELIBOUTPUT = librayeditor.a
 # Main Application Files
 APPSRC = src/main.cpp src/rayeditor.res
 APPLIBS = -lraypatcher
-APPINCLUDES = -Iinclude/raypatcher
 APPOUTPUT = rayeditor.exe
 
 default:
-	g++ $(APPSRC) $(RELIBSRC) -o $(APPOUTPUT) -O2 -Wall -Wno-missing-braces -Wunused-function -Iinclude $(RELIBINCLUDES) $(APPINCLUDES) -L lib $(RELIBLIB) $(APPLIBS)
+	g++ $(APPSRC) $(RELIBSRC) -o $(APPOUTPUT) -O2 -Wall -Wno-missing-braces -Wunused-function -Iinclude $(RELIBINCLUDES) -L lib $(RELIBLIB) $(APPLIBS)
 	./$(APPOUTPUT)

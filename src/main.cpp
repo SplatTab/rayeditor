@@ -1,5 +1,5 @@
 #include "rayeditor.hpp"
-#include "rrayc.hpp"
+#include <raypatcher.h>
 #include <rlImGui.h>
 
 using namespace RayEditor;
@@ -16,6 +16,10 @@ int main(int argc, char *argv[]){
     SetWindowMinSize(screenWidth, screenHeight);
     rlImGuiSetup(true);
 
+    RPatcher_Context patcher;
+    patcher.SetTempLibaryPath((Project::GetProjectDirectory() + "\\temp\\libs").c_str());
+    patcher.AddSourceFile("data\\templates\\RayBehaviour.cpp.txt", "-Idata\\include\\");
+
     // Arg 0: Application name, Arg 1: Project directory
     if (argc > 1)
     {
@@ -26,8 +30,6 @@ int main(int argc, char *argv[]){
     Docks::DockManager::activeDocks.push_back(std::make_unique<Docks::AssetManager>());
 
     CachedIcons::LoadIcons();
-
-    RRayPatcher::EditorInit(Project::GetProjectDirectory());
 
     Log::Info("Welcome to " + Title); // Greetings!
 
@@ -70,6 +72,7 @@ int main(int argc, char *argv[]){
             DrawFPS(GetScreenWidth() - 100, 20);
 
         EndDrawing();
+        patcher.Update(true);
     }
 
     // |De-Initialization|
@@ -78,6 +81,7 @@ int main(int argc, char *argv[]){
     Docks::DockManager::CloseDocks();
     CachedIcons::UnloadIcons();
     rlImGuiShutdown();
+    patcher.UnloadAll();
     CloseWindow();
     //--------------------------------
 
