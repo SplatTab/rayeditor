@@ -12,4 +12,3 @@ APPOUTPUT = rayeditor.exe
 
 default:
 	g++ $(APPSRC) $(RELIBSRC) -o $(APPOUTPUT) -O2 -Wall -Wno-missing-braces -Wunused-function -Iinclude $(RELIBINCLUDES) -L lib $(RELIBLIB) $(APPLIBS)
-	./$(APPOUTPUT)

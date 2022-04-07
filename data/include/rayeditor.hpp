@@ -41,6 +41,7 @@ namespace RayEditor {
 
             static std::string GetProjectDirectory(); // Gets the active project directory.
             static bool SetProjectDirectory(const char *projectPath); // Sets the active project directory.
+            static void Update(); // Manages the project such as source file compilation etc.
             inline static bool IsProjectLoaded; // Is a project loaded?
 
         private:
@@ -69,11 +70,11 @@ namespace RayEditor {
     }; // A class for managing and getting cached editor icons.
 
         class Application {
-            public:
+        public:
 
-                inline static bool quit; // Is the editor quitting?
-
-    }; // A class for managing the editor application.
+            inline static bool quit; // Is the editor quitting?
+            static RPatcher_Context patcher;
+    }; // A class for managing the internal editor.
 
     namespace Docks {
 

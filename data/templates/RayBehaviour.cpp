@@ -1,8 +1,9 @@
 #include <raybehavior.h>
+#include <raylib.h>
 
 #include <iostream>
 
-class #SCRIPTNAME# : public IRayBehaviour {
+class TemplateBehaviour : public IRayBehaviour {
     public:
 
         // Init is called when the game starts.
@@ -17,7 +18,7 @@ class #SCRIPTNAME# : public IRayBehaviour {
 
         // Draw is called during the frames render phase.
         void Draw() override {
-            std::cout << "Draw" << std::endl;
+            DrawRectangle(0, 0, 100, 100, RAYWHITE);
         }
 
         // Close is called then the program exits
@@ -27,5 +28,5 @@ class #SCRIPTNAME# : public IRayBehaviour {
 };
 
 // Boilerplate code to register the behaviour
-extern "C" __declspec(dllexport)IRayBehaviour* GetBehaviour(){ return new TestBehaviour();}
+extern "C" __declspec(dllexport)IRayBehaviour* GetBehaviour(){ return new TemplateBehaviour();}
 extern "C" __declspec(dllexport)void KillBehaviour( IRayBehaviour* p ){ delete p;}

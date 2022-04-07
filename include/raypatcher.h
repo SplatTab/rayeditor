@@ -33,6 +33,7 @@ typedef struct {
     std::filesystem::path absolutePath; // The absolute path to the source file.
     std::filesystem::path dynamicLibaryPath; // The absolute path to this source files current dynamic libary.
     std::string includePaths; // The include paths for the ray behaviour.
+    std::string libPaths; // The lib paths for the ray behaviour.
     int64_t lastWriteTime; // The last time the file was modified.
 
 } SourceFile; // Info about a source file that will be compiled and loaded at runtime if modified.
@@ -51,7 +52,7 @@ class RPatcher_Context {
     public:
 
         PatchError SetTempLibaryPath(const char *path); // Setup a temporary path to manage the compiled libaries.
-        PatchError AddSourceFile(const char *path, const char *includePath); // Add a source file to the context to be updated.
+        PatchError AddSourceFile(const char *path, const char *includePath, const char *libsPaths); // Add a source file to the context to be updated.
         void Update(bool recompile); // Update the context and do things like check if libaries need to be recompiled and recompile them.
         void UnloadAll(); // Unloads all ray behaviours. Note: Should be called at the end of you're program or to wipe all ray behaviours and source files.
         std::vector<RayObject> m_rayBehaviours; // A list of ray behaviours for you're program.

@@ -16,10 +16,6 @@ int main(int argc, char *argv[]){
     SetWindowMinSize(screenWidth, screenHeight);
     rlImGuiSetup(true);
 
-    RPatcher_Context patcher;
-    patcher.SetTempLibaryPath((Project::GetProjectDirectory() + "\\temp\\libs").c_str());
-    patcher.AddSourceFile("data\\templates\\RayBehaviour.cpp.txt", "-Idata\\include\\");
-
     // Arg 0: Application name, Arg 1: Project directory
     if (argc > 1)
     {
@@ -72,7 +68,8 @@ int main(int argc, char *argv[]){
             DrawFPS(GetScreenWidth() - 100, 20);
 
         EndDrawing();
-        patcher.Update(true);
+
+        Project::Update();
     }
 
     // |De-Initialization|
@@ -81,7 +78,6 @@ int main(int argc, char *argv[]){
     Docks::DockManager::CloseDocks();
     CachedIcons::UnloadIcons();
     rlImGuiShutdown();
-    patcher.UnloadAll();
     CloseWindow();
     //--------------------------------
 

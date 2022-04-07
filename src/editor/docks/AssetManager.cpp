@@ -6,7 +6,7 @@
 using namespace RayEditor;
 using namespace Docks;
 using namespace Utility::RLCommonUtils;
-using namespace std::filesystem;
+namespace fs = std::filesystem;
 
 void AssetManager::DrawWindow(int dockID) {
     if (!open) {
@@ -108,7 +108,7 @@ void AssetManager::RefreshFiles() {
         activeRelativeLocation = "";
     }
 
-    for (const auto & p : directory_iterator(currentProjectDirectory + activeRelativeLocation))
+    for (const auto & p : fs::directory_iterator(currentProjectDirectory + activeRelativeLocation))
     {
         if (p.is_directory())
         {

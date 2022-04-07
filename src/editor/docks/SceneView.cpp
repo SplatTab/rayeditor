@@ -4,6 +4,10 @@
 using namespace RayEditor::Docks;
 
 Camera2D camera;
+bool focused;
+bool dragging;
+Vector2 lastMousePos;
+Vector2 lastCamTarget;
 
 void SceneView::StartWindow() {
     camera.zoom = 1;
@@ -23,11 +27,48 @@ void SceneView::DrawWindow(int dockID) {
         return;
     }
 
+    focused = ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow);
+
+    if (focused)
+    {
+        if (IsMouseButtonDown(0))
+        {
+            if (!dragging)
+            {
+                lastMousePos = GetMousePosition();
+                lastCamTarget = camera.target;
+            }
+
+            dragging = true;
+            Vector2 mousePos = GetMousePosition();
+            Vector2 subtract = Vector2 { lastMousePos.x - mousePos.x, lastMousePos.y - mousePos.y };
+            Vector2 mouseDelta = subtract;
+
+            mouseDelta.x /= camera.zoom;
+            mouseDelta.y /= camera.zoom;
+
+            Vector2 add = Vector2 { lastCamTarget.x + mouseDelta.x, lastCamTarget.y + mouseDelta.y };
+            camera.target = add;
+            UnloadRenderTexture(ViewTexture);
+            ViewTexture = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
+            UpdateSceneView();
+        }
+        else
+        {
+            dragging = false;
+        }
+    }
+    else
+    {
+        dragging = false;
+    }
+
     if (IsWindowResized()) {
         UnloadRenderTexture(ViewTexture);
         ViewTexture = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
         camera.offset.x = GetScreenWidth() / 2.0f;
         camera.offset.y = GetScreenHeight() / 2.0f;
+        UpdateSceneView();
     }
 
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
@@ -36,7 +77,6 @@ void SceneView::DrawWindow(int dockID) {
 
     ImGui::Begin(("Scene View##" + std::to_string(dockID)).c_str(), &open, ImGuiWindowFlags_NoScrollbar);
 
-    // center the scratch pad in the view
     Rectangle viewRect = { 0 };
     viewRect.x = ViewTexture.texture.width / 2 - size.x / 2;
     viewRect.y = ViewTexture.texture.height / 2 - size.y / 2;
@@ -62,7 +102,13 @@ void SceneView::UpdateSceneView() {
     BeginTextureMode(ViewTexture);
     ClearBackground(BLUE);
     BeginMode2D(camera);
-    DrawTexture(CachedIcons::defaultFile, CachedIcons::defaultFile.width / -2, CachedIcons::defaultFile.height / -2, WHITE);
+
+    for (auto& object : Project::GetScriptObjects())
+    {
+        object.RayObj->Draw();
+        Log::Debug("Drawing a object in scene view");
+    }
+
     EndMode2D();
     EndTextureMode();
 }
