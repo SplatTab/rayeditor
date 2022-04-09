@@ -1,11 +1,10 @@
 #include "rayeditor.hpp"
+#include <raypatcher.h>
 #include <filesystem>
 #include <algorithm>
 
 using namespace RayEditor;
 namespace fs = std::filesystem;
-
-RPatcher_Context patcher;
 
 /// <summary>
 /// Gets the projects directory be sure to check if the project is loaded first.
@@ -36,26 +35,7 @@ bool Project::SetProjectDirectory(const char *projectPath) {
 
             IsProjectLoaded = true;
             projectDir = absolutePath.string();
-            PatchError response = patcher.SetTempLibaryPath((projectDir + "\\temp\\libs").c_str());
-
-            if (response == PATCH_ERROR_INVALID_PATH || response == PATCH_ERROR_NOT_DIRECTORY)
-            {
-                if (!fs::create_directories(projectDir + "\\temp\\libs")) return false;
-            }
-
-            for (const auto& p : fs::recursive_directory_iterator(projectDir))
-            {
-                if (p.is_directory()) {
-                    for (const auto& subp : fs::directory_iterator(p))
-                    {
-                        if (subp.path().extension().string() == ".cpp")
-                        {
-                            patcher.AddSourceFile(subp.path().string().c_str(), "-Idata\\include", "-Ldata\\libs -lraylib");
-                            Log::Debug("Added file: " + fs::absolute(subp).string());
-                        }
-                    }
-                }
-            }
+            RPatcher::SetTempLibaryPath((projectDir + "/temp/libs").c_str());
 
             return true;
         }

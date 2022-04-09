@@ -21,7 +21,7 @@ class TemplateBehaviour : public IRayBehaviour {
         // Draw is called every frame during rendering.
         void Draw() override
         {
-            std::cout << "Draw" << std::endl;
+            DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), BLUE);
         }
 
         // Close is called then the program exits

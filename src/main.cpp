@@ -69,7 +69,7 @@ int main(int argc, char *argv[]){
 
         EndDrawing();
 
-        Project::Update();
+        RPatcher::Update();
     }
 
     // |De-Initialization|

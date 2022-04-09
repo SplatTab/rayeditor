@@ -1,5 +1,6 @@
 #include "rayeditor.hpp"
 #include "raystyles.hpp"
+#include <raypatcher.h>
 #include <rlImGui.h>
 #include <filesystem>
 
@@ -126,5 +127,19 @@ void AssetManager::RefreshFiles() {
         fileInfo.fileExtension = fileExtension;
 
         files.push_back(fileInfo);
+    }
+
+    for (const auto& p : fs::recursive_directory_iterator(Project::GetProjectDirectory()))
+    {
+        if (p.is_directory()) {
+            for (const auto& subp : fs::directory_iterator(p))
+            {
+                if (subp.path().extension().string() == ".cpp")
+                {
+                    RPatcher::AddSourceFile(subp.path().string().c_str(), "-Idata\\include\\", "-L. -Ldata\\libs\\ -lraylib -lopengl32 -lgdi32 -lwinmm -lws2_32");
+                    Log::Debug("Added file: " + fs::absolute(subp).string());
+                }
+            }
+        }
     }
 }

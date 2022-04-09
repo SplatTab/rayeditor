@@ -1,14 +1,11 @@
-# Ray Editor Lib Files
-RELIBSRC = lib/imgui/*.cpp src/editor/*.cpp src/editor/utility/*.cpp src/editor/docks/*.cpp
-RELIBLIB = -lraylib -lopengl32 -lgdi32 -lwinmm -lws2_32
-RELIBINCLUDES = -Iinclude/imgui -Iinclude/raylib
-RELIBOUTPUT = librayeditor.a
+SRC = lib/imgui/*.cpp src/editor/*.cpp src/editor/utility/*.cpp src/editor/docks/*.cpp
 
-
-# Main Application Files
 APPSRC = src/main.cpp src/rayeditor.res
-APPLIBS = -lraypatcher
 APPOUTPUT = rayeditor.exe
 
+INCLUDES = -Iinclude -Iinclude/imgui -Iinclude/raylib
+LIBPATHS = -Llib -L.
+LIBS = -lraypatcher -lraylib -lopengl32 -lgdi32 -lwinmm -lws2_32
+
 default:
-	g++ $(APPSRC) $(RELIBSRC) -o $(APPOUTPUT) -O2 -Wall -Wno-missing-braces -Wunused-function -Iinclude $(RELIBINCLUDES) -L lib $(RELIBLIB) $(APPLIBS)
+	g++ -std=c++17 $(SRC) $(APPSRC) -o $(APPOUTPUT) -O2 -Wall -Wno-missing-braces -Wunused-function $(INCLUDES) $(LIBPATHS) $(LIBS)

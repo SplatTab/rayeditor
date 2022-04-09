@@ -60,9 +60,9 @@ class RPatcher {
         static int64_t GetLastTimeWritten(const char *path); // Get the last time a file was modified.
         static std::string Compile(SourceFile sourceFile); // Compiles a source file and returns the path to the dynamic compiled libary.
         static PatchError AddLibary(const char *path); // Extracts a ray behaviour from a libary and adds it to ray behaviours.
+        inline static std::vector<SourceFile> m_sourceFiles; // A list of source files.
 
     private:
 
-        inline static std::vector<SourceFile> m_sourceFiles; // A list of source files.
         inline static std::string m_tempLibaryPath; // The current temp libary directory path.
 }; // A ray patcher context is the main class where you specify source files and other info.

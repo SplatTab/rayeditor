@@ -1,4 +1,5 @@
 #include "rayeditor.hpp"
+#include <raypatcher.h>
 #include <rlImGui.h>
 
 using namespace RayEditor::Docks;
@@ -27,7 +28,7 @@ void SceneView::DrawWindow(int dockID) {
         return;
     }
 
-    focused = ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow);
+    focused = ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows | ImGuiFocusedFlags_DockHierarchy);
 
     if (focused)
     {
@@ -103,10 +104,9 @@ void SceneView::UpdateSceneView() {
     ClearBackground(BLUE);
     BeginMode2D(camera);
 
-    for (auto& object : Project::GetScriptObjects())
+    for (auto& object : RPatcher::m_rayBehaviours)
     {
         object.RayObj->Draw();
-        Log::Debug("Drawing a object in scene view");
     }
 
     EndMode2D();
