@@ -26,7 +26,6 @@ typedef struct {
     RObjCreator CreateRayObj; // Object creator
     RObjDeletor DeleteRayObj; // Object deletor
     IRayBehaviour* RayObj; // The ray behaviour
-
 } RayObject; // A ray object is a ray behaviour with a creator and a deleter.
 
 typedef struct {
@@ -34,8 +33,7 @@ typedef struct {
     std::filesystem::path dynamicLibaryPath; // The absolute path to this source files current dynamic libary.
     std::string includePaths; // The include paths for the ray behaviour.
     std::string libPaths; // The lib paths for the ray behaviour.
-    int64_t lastWriteTime; // The last time the file was modified.
-
+    int64_t lastTimeWritten; // The last time the file was modified.
 } SourceFile; // Info about a source file that will be compiled and loaded at runtime if modified.
 
 enum PatchError {
@@ -48,20 +46,23 @@ enum PatchError {
     PATCH_ERROR_DYNAMIC_LIB_NOT_LOADED // The dynamic libary couldn't be loaded.
 };
 
-class RPatcher_Context {
+class RPatcher {
     public:
 
-        PatchError SetTempLibaryPath(const char *path); // Setup a temporary path to manage the compiled libaries.
-        PatchError AddSourceFile(const char *path, const char *includePath, const char *libsPaths); // Add a source file to the context to be updated.
-        void Update(bool recompile); // Update the context and do things like check if libaries need to be recompiled and recompile them.
-        void UnloadAll(); // Unloads all ray behaviours. Note: Should be called at the end of you're program or to wipe all ray behaviours and source files.
-        std::vector<RayObject> m_rayBehaviours; // A list of ray behaviours for you're program.
+        // Regular libary functions
+        static PatchError SetTempLibaryPath(const char *path); // Setup a temporary path to manage the compiled libaries.
+        static PatchError AddSourceFile(const char *path, const char *includePath, const char *libsPaths); // Add a source file to the context to be updated.
+        static void Update(); // Update the context and do things like check if libaries need to be recompiled and recompile them.
+        static void UnloadAll(); // Unloads all ray behaviours. Note: Should be called at the end of you're program or to wipe all ray behaviours and source files.
+        inline static std::vector<RayObject> m_rayBehaviours; // A list of ray behaviours for you're program.
 
-        std::string Compile(SourceFile sourceFile); // Compiles a source file and returns the path to the dynamic compiled libary. Note: Should not be used manually but still available
-        PatchError AddLibary(const char *path); // Extracts a ray behaviour from a libary and adds it to ray behaviours. Note: Should not be used manually but still available
+        // Advanced System stuff. Note: Should not be used manually but still available.
+        static int64_t GetLastTimeWritten(const char *path); // Get the last time a file was modified.
+        static std::string Compile(SourceFile sourceFile); // Compiles a source file and returns the path to the dynamic compiled libary.
+        static PatchError AddLibary(const char *path); // Extracts a ray behaviour from a libary and adds it to ray behaviours.
 
     private:
 
-        std::vector<SourceFile> m_sourceFiles; // A list of source files.
-        std::string m_tempLibaryPath; // The current temp libary directory path.
+        inline static std::vector<SourceFile> m_sourceFiles; // A list of source files.
+        inline static std::string m_tempLibaryPath; // The current temp libary directory path.
 }; // A ray patcher context is the main class where you specify source files and other info.
