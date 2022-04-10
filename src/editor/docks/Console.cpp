@@ -3,7 +3,8 @@
 using namespace RayEditor;
 using namespace Docks;
 
-void Console::DrawWindow() {
+void Console::DrawWindow()
+{
     if (ImGui::Begin("Console"))
     {
         ImGui::SameLine();
@@ -27,7 +28,7 @@ void Console::DrawWindow() {
                 if (Utility::stristr(line.logText.c_str(), filterText) == nullptr) continue;
             }
 
-            ImGui::TextColored(Conversion::RayColorToImguiColor(line.logColor), "%s", line.prefix.c_str());
+            ImGui::TextColored(Utility::RayColorToImguiColor(line.logColor), "%s", line.prefix.c_str());
             ImGui::SameLine();
             ImGui::TextUnformatted(line.logText.c_str());
 
@@ -44,6 +45,7 @@ void Console::DrawWindow() {
 /// Adds a log item to the console to be drawn.
 /// </summary>
 /// <param name="logItem">The LogItem to be added to the logs.</param>
-void Console::AddLog(LogItem logItem) {
+void Console::AddLog(LogItem logItem)
+{
     logItems.push_back(logItem);
 }

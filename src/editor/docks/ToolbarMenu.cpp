@@ -8,7 +8,8 @@ ImFileDialogInfo dialogOpenProjectInfo;
 
 void SelectProjectDialog();
 
-void ToolbarMenu::DrawWindow() {
+void ToolbarMenu::DrawWindow()
+{
     if (ImGui::BeginMenuBar())
     {
         if (ImGui::BeginMenu("File"))
@@ -27,7 +28,8 @@ void ToolbarMenu::DrawWindow() {
         }
 
         // Runtime Menu Items
-        for(MenuItem item : menuItems) {
+        for(MenuItem item : menuItems)
+        {
             if (ImGui::BeginMenu(item.container.c_str()))
             {
                 if (ImGui::MenuItem(item.name.c_str())) item.onClick();
@@ -48,7 +50,8 @@ void ToolbarMenu::DrawWindow() {
 ///<summary>
 /// Opens a file dialog to select a project file.
 ///</summary>
-void SelectProjectDialog() {
+void SelectProjectDialog()
+{
     dialogOpenProjectOpen = true;
     dialogOpenProjectInfo.type = ImGuiFileDialogType_OpenFile;
     dialogOpenProjectInfo.title = "Select Project File";

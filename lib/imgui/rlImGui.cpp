@@ -435,7 +435,8 @@ void rlImGuiImage(const Texture *image)
     ImGui::Image((ImTextureID)image, ImVec2(float(image->width), float(image->height)));
 }
 
-bool rlImGuiImageButton(const Texture *image) {
+bool rlImGuiImageButton(const Texture *image)
+{
     return ImGui::ImageButton((ImTextureID)image, ImVec2(float(image->width), float(image->height)));
 }
 

@@ -1,4 +1,4 @@
-SRC = lib/imgui/*.cpp src/editor/*.cpp src/editor/utility/*.cpp src/editor/docks/*.cpp
+SRC = lib/imgui/*.cpp src/editor/*.cpp src/editor/docks/*.cpp
 
 APPSRC = src/main.cpp src/rayeditor.res
 APPOUTPUT = rayeditor.exe

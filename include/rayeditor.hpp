@@ -19,10 +19,14 @@ namespace RayEditor {
     }; // A log item used to store log messages.
 
     class Utility {
+        public:
 
-            static Vector2 RayVec2Add(Vector2 a, Vector2 b);
-            static Vector2 RayVec2Subtract(Vector2 a, Vector2 b);
+            static Vector2 RayVec2Add(Vector2 a, Vector2 b); // Add two vectors values.
+            static Vector2 RayVec2Subtract(Vector2 a, Vector2 b); // Subtracts two vectors values.
+            static Vector2 RayVec2Divide(Vector2 a, Vector2 b); // Divides two vectors values.
+            static Vector2 RayVec2Multiply(Vector2 a, Vector2 b); // Multiplies two vectors values.
             static ImVec4 RayColorToImguiColor(Color color); // Converts a raylib color to an ImGui color.
+            static std::string PatchErrorToString(int error); // Converts a patch error to a string.
             static char *stristr(const char *str1, const char * str2); // Checks if a string contains another string.
     }; // Basic Utilities such as conversion comparision and operators for editor tools.
 
@@ -56,6 +60,7 @@ namespace RayEditor {
 
             inline static Texture2D folder; // The folder icon.
             inline static Texture2D defaultFile; // The default file icon.
+            inline static Texture2D cameracenter; // The camera + marker icon.
     }; // A class for managing and getting cached editor icons.
 
         class Application {
@@ -120,11 +125,20 @@ namespace RayEditor {
 
                 void StartWindow() override; // Setups the scene view dock.
                 void DrawWindow(int dockID) override; // Draws the scene view dock.
+                void ReloadRenderTexture(); // Reloads the render texture.
                 void UpdateSceneView(); // Updates the scene rendered in the scene view dock.
 
             private:
 
                 RenderTexture ViewTexture; // The render texture used to render the raylib view.
+                Rectangle viewRect; // The source rectangle used to position the scene view.
+                Camera2D camera; // The scene view camera
+                Vector2 lastMousePos; // The last mouse position.
+                Vector2 lastCamTarget; // The last camera target.
+                ImVec2 size; // The size of the window.
+                ImVec2 virtualRes; // The virtual resolution used to display the window.
+                bool interactive; // Is the window focused and docked?
+                bool dragging; // Is the camera being dragged?
         }; // A dock for viewing the current active scene.
 
         class DockManager {

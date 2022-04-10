@@ -5,7 +5,8 @@ using namespace RayEditor::Docks;
 /// <summary>
 /// Draws and handles docks/menus UI.
 /// </summary>
-void DockManager::UpdateDocks() {
+void DockManager::UpdateDocks()
+{
     for (size_t i = 0; i < activeDocks.size(); i++)
     {
         if (!activeDocks[i].operator->()->isInitialized)
@@ -21,6 +22,7 @@ void DockManager::UpdateDocks() {
 // <summary>
 // Unitialize all docks and close them.
 // </summary>
-void DockManager::CloseDocks() {
+void DockManager::CloseDocks()
+{
     for (size_t i = 0; i < activeDocks.size(); i++) activeDocks[i].operator->()->CloseWindow();
 }

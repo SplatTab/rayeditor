@@ -4,14 +4,15 @@
 
 using namespace RayEditor;
 
-int main(int argc, char *argv[]){
+int main(int argc, char *argv[])
+{
     int screenWidth = 1280;
     int screenHeight = 800;
     const std::string Title("RayEditor V" + std::string(EDITOR_VERSION));
     bool dockspaceActive;
 
     SetTraceLogCallback(Log::TraceLog);
-    SetConfigFlags(FLAG_MSAA_4X_HINT | FLAG_VSYNC_HINT | FLAG_WINDOW_RESIZABLE);
+    SetConfigFlags(FLAG_MSAA_4X_HINT | FLAG_WINDOW_RESIZABLE);
     InitWindow(screenWidth, screenHeight, Title.c_str());
     SetWindowMinSize(screenWidth, screenHeight);
     rlImGuiSetup(true);
@@ -24,6 +25,7 @@ int main(int argc, char *argv[]){
     }
 
     Docks::DockManager::activeDocks.push_back(std::make_unique<Docks::AssetManager>());
+    Docks::DockManager::activeDocks.push_back(std::make_unique<Docks::SceneView>());
 
     CachedIcons::LoadIcons();
 

@@ -10,7 +10,8 @@ namespace fs = std::filesystem;
 /// Gets the projects directory be sure to check if the project is loaded first.
 /// </summary>
 /// <returns>The active projects directory.</returns>
-std::string Project::GetProjectDirectory() {
+std::string Project::GetProjectDirectory()
+{
     return projectDir;
 }
 
@@ -19,8 +20,8 @@ std::string Project::GetProjectDirectory() {
 /// </summary>
 /// <param name="projectPath">The directory.</param>
 /// <returns>If the action was successful</returns>
-bool Project::SetProjectDirectory(const char *projectPath) {
-
+bool Project::SetProjectDirectory(const char *projectPath)
+{
     if (projectPath == NULL) return false;
 
     std::string projectPathStr(projectPath);

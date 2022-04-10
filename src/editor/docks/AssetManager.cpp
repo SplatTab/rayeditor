@@ -6,24 +6,27 @@
 
 using namespace RayEditor;
 using namespace Docks;
-using namespace Utility::RLCommonUtils;
 namespace fs = std::filesystem;
 
-void AssetManager::DrawWindow(int dockID) {
-    if (!open) {
+void AssetManager::DrawWindow(int dockID)
+{
+    if (!open)
+    {
         DockManager::activeDocks.erase(DockManager::activeDocks.begin() + (dockID));
         return;
     }
 
     if (!Project::IsProjectLoaded) return;
 
-    if (Project::GetProjectDirectory() != currentProjectDirectory) {
+    if (Project::GetProjectDirectory() != currentProjectDirectory)
+    {
         currentProjectDirectory = Project::GetProjectDirectory();
         activeRelativeLocation = "";
         prevRelativeLocation = "0";
     }
 
-    if (prevRelativeLocation != activeRelativeLocation) {
+    if (prevRelativeLocation != activeRelativeLocation)
+    {
         prevRelativeLocation = activeRelativeLocation;
         RefreshFiles();
     }
@@ -46,7 +49,7 @@ void AssetManager::DrawWindow(int dockID) {
 
         std::string copyBuffer;
 
-        if (!ImGui::BeginTable("###assetsTable", 64, ImGuiTableFlags_SizingFixedSame) || files.size() >= 64) {
+        if (!ImGui::BeginTable("###assetsTable", 8, ImGuiTableFlags_SizingFixedSame)) {
             ImGui::End();
             return;
         }
@@ -54,32 +57,35 @@ void AssetManager::DrawWindow(int dockID) {
         PushStyle::TransparentTable();
         ImGui::TableHeadersRow();
 
-        for (auto& file : files)
+        for (size_t i = 0; i < files.size(); i++)
         {
-            if (filterText[0] != '\0') {
-                if (StringUtils::stristr(file.fileName.c_str(), filterText) == nullptr) continue;
+            if (filterText[0] != '\0')
+            {
+                if (Utility::stristr(files[i].fileName.c_str(), filterText) == nullptr) continue;
             }
+
+            if (ImGui::GetColumnIndex() == 7) ImGui::TableNextRow();
 
             ImGui::TableNextColumn();
 
-            if (ImGui::CalcTextSize(file.fileName.c_str()).x > file.icon.width) ImGui::TableHeader((file.fileName.substr(0, 7) + "..").c_str());
-            else ImGui::TableHeader(file.fileName.substr(0, 8).c_str());
+            if (ImGui::CalcTextSize(files[i].fileName.c_str()).x > files[i].icon.width) ImGui::TableHeader((files[i].fileName.substr(0, 7) + "..").c_str());
+            else ImGui::TableHeader(files[i].fileName.substr(0, 8).c_str());
 
-            if (rlImGuiImageButton(&file.icon))
+            if (rlImGuiImageButton(&files[i].icon))
             {
-                if (file.isDirectory && file.isSelected)
+                if (files[i].isDirectory && files[i].isSelected)
                 {
-                    file.isSelected = false;
-                    if (file.fileExtension == "UpOneFolder\\//") activeRelativeLocation = activeRelativeLocation.substr(0, activeRelativeLocation.find_last_of('\\'));
-                    else activeRelativeLocation += "\\" + file.fileName;
+                    files[i].isSelected = false;
+                    if (files[i].fileExtension == "UpOneFolder\\//") activeRelativeLocation = activeRelativeLocation.substr(0, activeRelativeLocation.find_last_of('\\'));
+                    else activeRelativeLocation += "\\" + files[i].fileName;
                 }
                 else
                 {
-                    file.isSelected = true;
+                    files[i].isSelected = true;
                 }
             }
 
-            if (copy) copyBuffer += file.fileName + file.fileExtension + "\r\n";
+            if (copy) copyBuffer += files[i].fileName + files[i].fileExtension + "\r\n";
         }
 
         if (copy) SetClipboardText(copyBuffer.c_str());
@@ -94,7 +100,8 @@ void AssetManager::DrawWindow(int dockID) {
 ///<summary>
 /// Refreshes the current files with the active directory's files.
 ///</summary>
-void AssetManager::RefreshFiles() {
+void AssetManager::RefreshFiles()
+{
     files.clear();
 
     FileInfo fileInfo;
@@ -145,7 +152,11 @@ void AssetManager::RefreshFiles() {
                         if (file.absolutePath == subp.path().string()) available = false;
                     }
 
-                    if (available) RPatcher::AddSourceFile(subp.path().string().c_str(), "-Idata\\include\\", "-L. -Ldata\\libs\\ -lraylib -lopengl32 -lgdi32 -lwinmm -lws2_32");
+                    if (available)
+                    {
+                        PatchError error = RPatcher::AddSourceFile(subp.path().string().c_str(), "-Idata\\include\\", "-L. -Ldata\\libs\\ -lraylib -lopengl32 -lgdi32 -lwinmm -lws2_32");
+                        if (error != PATCH_ERROR_NO_ERROR) Log::Error("Source file: " + subp.path().string() + " could not be loaded. Error: " + Utility::PatchErrorToString(error));
+                    }
                 }
             }
         }

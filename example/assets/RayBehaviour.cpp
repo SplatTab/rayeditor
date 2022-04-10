@@ -1,5 +1,6 @@
 #include <raybehavior.h>
 #include <raylib.h>
+#include <string>
 
 class ClassName : public IRayBehaviour {
     public:
@@ -23,12 +24,7 @@ class ClassName : public IRayBehaviour {
         // Draw is called every frame during rendering.
         void Draw() override
         {
-            if (jump)
-            {
-                DrawCircle(0, 0, 50, GREEN);
-            }
-            DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), RAYWHITE);
-            DrawRectangle(30, 0, GetScreenWidth(), GetScreenHeight(), RED);
+            DrawRectangle(GetScreenWidth() / 2 - 50, GetScreenHeight() / 2 - 50, 100, 100, RED);
         }
 
         // Close is called then the program exits
