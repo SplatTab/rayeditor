@@ -2,16 +2,16 @@
 #include <raypatcher.h>
 #include <rlImGui.h>
 
+using namespace RayEditor;
 using namespace RayEditor::Docks;
 
 Camera2D camera;
-bool focused;
 bool dragging;
 Vector2 lastMousePos;
 Vector2 lastCamTarget;
 
 void SceneView::StartWindow() {
-    camera.zoom = 1;
+    camera.zoom = 0.15f;
     camera.target.x = 0;
     camera.target.y = 0;
     camera.rotation = 0;
@@ -28,43 +28,24 @@ void SceneView::DrawWindow(int dockID) {
         return;
     }
 
-    focused = ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows | ImGuiFocusedFlags_DockHierarchy);
-
-    if (focused)
+    if (!dragging)
     {
-        if (IsMouseButtonDown(0))
-        {
-            if (!dragging)
-            {
-                lastMousePos = GetMousePosition();
-                lastCamTarget = camera.target;
-            }
-
-            dragging = true;
-            Vector2 mousePos = GetMousePosition();
-            Vector2 subtract = Vector2 { lastMousePos.x - mousePos.x, lastMousePos.y - mousePos.y };
-            Vector2 mouseDelta = subtract;
-
-            mouseDelta.x /= camera.zoom;
-            mouseDelta.y /= camera.zoom;
-
-            Vector2 add = Vector2 { lastCamTarget.x + mouseDelta.x, lastCamTarget.y + mouseDelta.y };
-            camera.target = add;
-            UnloadRenderTexture(ViewTexture);
-            ViewTexture = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
-            UpdateSceneView();
-        }
-        else
-        {
-            dragging = false;
-        }
+        lastMousePos = GetMousePosition();
+        lastCamTarget = camera.target;
     }
     else
     {
-        dragging = false;
+        Vector2 mousePos = GetMousePosition();
+        Vector2 mouseDelta = Utility::RayVec2Subtract(lastMousePos, mousePos);;
+        mouseDelta.x /= camera.zoom;
+        mouseDelta.y /= camera.zoom;
+        camera.target = Utility::RayVec2Add(lastCamTarget, mouseDelta);
+        UnloadRenderTexture(ViewTexture);
+        ViewTexture = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
+        UpdateSceneView();
     }
 
-    if (IsWindowResized()) {
+    if (IsWindowResized() || Application::recompiling) {
         UnloadRenderTexture(ViewTexture);
         ViewTexture = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
         camera.offset.x = GetScreenWidth() / 2.0f;
@@ -72,42 +53,66 @@ void SceneView::DrawWindow(int dockID) {
         UpdateSceneView();
     }
 
-    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
-    ImGui::SetNextWindowSizeConstraints(ImVec2(400, 400), ImVec2((float)GetScreenWidth(), (float)GetScreenHeight()));
     ImVec2 size = ImGui::GetContentRegionAvail();
+    ImGui::SetNextWindowSizeConstraints(size, ImVec2((float)GetScreenWidth(), (float)GetScreenHeight()));
 
-    ImGui::Begin(("Scene View##" + std::to_string(dockID)).c_str(), &open, ImGuiWindowFlags_NoScrollbar);
-
-    Rectangle viewRect = { 0 };
-    viewRect.x = ViewTexture.texture.width / 2 - size.x / 2;
-    viewRect.y = ViewTexture.texture.height / 2 - size.y / 2;
-    viewRect.width = size.x;
-    viewRect.height = -size.y;
-
-    if (ImGui::BeginChild("Toolbar", ImVec2(ImGui::GetContentRegionAvail().x, 25)))
+    if (ImGui::Begin(("Scene View##" + std::to_string(dockID)).c_str(), &open, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse))
     {
-        ImGui::SetCursorPosX(2);
-        ImGui::SetCursorPosY(3);
-        ImGui::SameLine();
-        ImGui::TextUnformatted(TextFormat("camera target X%f Y%f", camera.target.x, camera.target.y));
+        Vector2 cameraPos = camera.target;
+        if (GetMouseWheelMove() > 0 && camera.zoom > 0.1f)
+        {
+            camera.zoom -= 0.1f;
+            camera.target = Vector2{cameraPos.x / camera.zoom, cameraPos.y / camera.zoom};
+            UnloadRenderTexture(ViewTexture);
+            ViewTexture = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
+            UpdateSceneView();
+        }
+        else if (GetMouseWheelMove() < 0 && camera.zoom < 2)
+        {
+            camera.zoom += 0.1f / camera.zoom;
+            camera.target = Utility::RayVec2Subtract(cameraPos, Vector2 { cameraPos.x / 2, cameraPos.y / 2});
+            UnloadRenderTexture(ViewTexture);
+            ViewTexture = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
+            UpdateSceneView();
+        }
+
+        if (IsMouseButtonDown(0) && ImGui::IsWindowDocked() && ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows)) dragging = true;
+        else dragging = false;
+
+        ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
+        Rectangle viewRect = { 0 };
+        viewRect.x = ViewTexture.texture.width / 2 - size.x / 2;
+        viewRect.y = ViewTexture.texture.height / 2 - size.y / 2;
+        viewRect.width = size.x;
+        viewRect.height = -size.y;
+
+        if (ImGui::BeginChild("Toolbar", ImVec2(size.x, 25)))
+        {
+            ImGui::SetCursorPosX(2);
+            ImGui::SetCursorPosY(3);
+            ImGui::SameLine();
+            ImGui::TextUnformatted(TextFormat("Camera Position X%f Y%f", camera.target.x, camera.target.y));
+        }
+
         ImGui::EndChild();
+
+        float aspect = ImGui::GetWindowSize().x;
+        rlImGuiImageRect(&ViewTexture.texture, aspect, aspect, viewRect);
+        ImGui::PopStyleVar(1);
     }
 
-    rlImGuiImageRect(&ViewTexture.texture, (int)size.x, (int)size.y, viewRect);
-
-    ImGui::PopStyleVar(1);
     ImGui::End();
 }
 
 void SceneView::UpdateSceneView() {
+    for (auto& object : RPatcher::m_rayBehaviours) object.RayObj->Close();
+    for (auto& object : RPatcher::m_rayBehaviours) object.RayObj->Init();
+
     BeginTextureMode(ViewTexture);
-    ClearBackground(BLUE);
+    ClearBackground(RAYWHITE);
     BeginMode2D(camera);
 
-    for (auto& object : RPatcher::m_rayBehaviours)
-    {
-        object.RayObj->Draw();
-    }
+    for (auto& object : RPatcher::m_rayBehaviours) object.RayObj->Draw();
 
     EndMode2D();
     EndTextureMode();

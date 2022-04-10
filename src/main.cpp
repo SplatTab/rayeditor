@@ -69,7 +69,9 @@ int main(int argc, char *argv[]){
 
         EndDrawing();
 
-        RPatcher::Update();
+        if (RPatcher::Update()) Application::recompiling = true;
+        else Application::recompiling = false;
+
     }
 
     // |De-Initialization|

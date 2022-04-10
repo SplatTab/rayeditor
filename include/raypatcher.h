@@ -52,7 +52,7 @@ class RPatcher {
         // Regular libary functions
         static PatchError SetTempLibaryPath(const char *path); // Setup a temporary path to manage the compiled libaries.
         static PatchError AddSourceFile(const char *path, const char *includePath, const char *libsPaths); // Add a source file to the context to be updated.
-        static void Update(); // Update the context and do things like check if libaries need to be recompiled and recompile them.
+        static bool Update(); // Update the context and do things like check if libaries need to be recompiled and recompile them.
         static void UnloadAll(); // Unloads all ray behaviours. Note: Should be called at the end of you're program or to wipe all ray behaviours and source files.
         inline static std::vector<RayObject> m_rayBehaviours; // A list of ray behaviours for you're program.
 

@@ -1,36 +1,34 @@
 #include <raybehavior.h>
 #include <raylib.h>
 
-#include <iostream>
-
-class TemplateBehaviour : public IRayBehaviour {
+class #CLASSNAME# : public IRayBehaviour {
     public:
 
         // Init is called when the program starts.
         void Init() override
         {
-            std::cout << "Init" << std::endl;
+            // TODO: Load you're art here.
         }
 
         // Update is called every frame before rendering.
         void Update() override
         {
-            std::cout << "Update" << std::endl;
+            // TODO: Update you're variables here.
         }
 
         // Draw is called every frame during rendering.
         void Draw() override
         {
-            std::cout << "Draw" << std::endl;
+            // TODO: Draw you're art here.
         }
 
         // Close is called then the program exits
         void Close() override
         {
-            std::cout << "Close" << std::endl;
+            // TODO: Unload you're art here.
         }
 };
 
 // Important boilerplate code to register the behaviour
-extern "C" __declspec(dllexport)IRayBehaviour* GetBehaviour(){ return new TemplateBehaviour();}
+extern "C" __declspec(dllexport)IRayBehaviour* GetBehaviour(){ return new #CLASSNAME#();}
 extern "C" __declspec(dllexport)void KillBehaviour( IRayBehaviour* p ){ delete p;}

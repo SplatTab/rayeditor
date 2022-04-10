@@ -1,43 +1,36 @@
 #include <raybehavior.h>
 #include <raylib.h>
 
-class ClassName : public IRayBehaviour {
+#include <iostream>
+
+class SomeText : public IRayBehaviour {
     public:
 
         // Init is called when the program starts.
         void Init() override
         {
-            // Init
+            std::cout << "Init" << std::endl;
         }
 
         // Update is called every frame before rendering.
-        bool jump = false;
         void Update() override
         {
-            if (IsKeyDown(KEY_SPACE))
-            {
-                bool jump = true;
-            }
+            std::cout << "Update" << std::endl;
         }
 
         // Draw is called every frame during rendering.
         void Draw() override
         {
-            if (jump)
-            {
-                DrawCircle(0, 0, 50, GREEN);
-            }
-            DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), RAYWHITE);
-            DrawRectangle(30, 0, GetScreenWidth(), GetScreenHeight(), RED);
+            DrawCircle(0, 0, 50, GREEN);
         }
 
         // Close is called then the program exits
         void Close() override
         {
-            // Close
+            std::cout << "Close" << std::endl;
         }
 };
 
 // Important boilerplate code to register the behaviour
-extern "C" __declspec(dllexport)IRayBehaviour* GetBehaviour(){ return new ClassName();}
+extern "C" __declspec(dllexport)IRayBehaviour* GetBehaviour(){ return new SomeText();}
 extern "C" __declspec(dllexport)void KillBehaviour( IRayBehaviour* p ){ delete p;}

@@ -2,41 +2,41 @@
 
 using namespace RayEditor;
 using namespace Docks;
-using namespace Utility;
-using namespace RLCommonUtils;
 
 void Console::DrawWindow() {
-    ImGui::Begin("Console");
-
-    ImGui::SameLine();
-    ImGui::SetNextItemWidth(200);
-    ImGui::InputTextWithHint("###filterText", "Filter", filterText, 512);
-    ImGui::SameLine();
-
-    bool copy = false;
-    if(ImGui::Button("Copy")) copy = true;
-
-    ImGui::SameLine();
-
-    if (ImGui::Button("Clear")) logItems.clear();
-
-    std::string copyBuffer;
-
-    for (auto& line : logItems)
+    if (ImGui::Begin("Console"))
     {
-        if (filterText[0] != '\0')
+        ImGui::SameLine();
+        ImGui::SetNextItemWidth(200);
+        ImGui::InputTextWithHint("###filterText", "Filter", filterText, 512);
+        ImGui::SameLine();
+
+        bool copy = false;
+        if(ImGui::Button("Copy")) copy = true;
+
+        ImGui::SameLine();
+
+        if (ImGui::Button("Clear")) logItems.clear();
+
+        std::string copyBuffer;
+
+        for (auto& line : logItems)
         {
-            if (StringUtils::stristr(line.logText.c_str(), filterText) == nullptr) continue;
+            if (filterText[0] != '\0')
+            {
+                if (Utility::stristr(line.logText.c_str(), filterText) == nullptr) continue;
+            }
+
+            ImGui::TextColored(Conversion::RayColorToImguiColor(line.logColor), "%s", line.prefix.c_str());
+            ImGui::SameLine();
+            ImGui::TextUnformatted(line.logText.c_str());
+
+            if (copy) copyBuffer += line.prefix + line.logText + "\r\n";
         }
 
-        ImGui::TextColored(Conversion::RayColorToImguiColor(line.logColor), "%s", line.prefix.c_str());
-        ImGui::SameLine();
-        ImGui::TextUnformatted(line.logText.c_str());
-
-        if (copy) copyBuffer += line.prefix + line.logText + "\r\n";
+        if (copy) SetClipboardText(copyBuffer.c_str());
     }
 
-    if (copy) SetClipboardText(copyBuffer.c_str());
     ImGui::End();
 }
 

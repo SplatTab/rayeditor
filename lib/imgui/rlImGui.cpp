@@ -341,7 +341,7 @@ void rlImGuiEndInitImGui()
     io.BackendPlatformName = "imgui_impl_raylib";
 
     io.BackendFlags |= ImGuiBackendFlags_HasMouseCursors;
-    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable | ImGuiConfigFlags_ViewportsEnable;
 
     io.KeyMap[ImGuiKey_Tab] = KEY_TAB;
     io.KeyMap[ImGuiKey_LeftArrow] = KEY_LEFT;

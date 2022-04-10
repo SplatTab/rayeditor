@@ -9,7 +9,7 @@
 
 namespace RayEditor {
 
-    #define EDITOR_VERSION "0.5.0" // The current editor version.
+    #define EDITOR_VERSION "0.7.0" // The current editor version.
 
     struct LogItem {
         std::string prefix;
@@ -18,22 +18,13 @@ namespace RayEditor {
         int logType;
     }; // A log item used to store log messages.
 
-    namespace Utility {
-        class Conversion {
-            public:
+    class Utility {
 
-                static ImVec4 RayColorToImguiColor(Color color); // Converts a raylib color to an ImGui color. Note: Should only be used for editor tools.
-        };
-
-        namespace RLCommonUtils {
-
-            class StringUtils {
-                public:
-
-                    static char *stristr(const char *str1, const char * str2); // Checks if a string contains another string. Note: Should only be used for editor tools.
-            }; // A set of utilies for string manipulation.
-        }
-    } // The namespace utitlity contains a set of utilities to make you're life easier.
+            static Vector2 RayVec2Add(Vector2 a, Vector2 b);
+            static Vector2 RayVec2Subtract(Vector2 a, Vector2 b);
+            static ImVec4 RayColorToImguiColor(Color color); // Converts a raylib color to an ImGui color.
+            static char *stristr(const char *str1, const char * str2); // Checks if a string contains another string.
+    }; // Basic Utilities such as conversion comparision and operators for editor tools.
 
     class Project {
         public:
@@ -70,6 +61,7 @@ namespace RayEditor {
         class Application {
             public:
 
+                inline static bool recompiling; // Is the application recompiling a source file?
                 inline static bool quit; // Is the editor quitting?
 
     }; // A class for managing the editor application.

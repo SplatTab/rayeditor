@@ -21,7 +21,11 @@
                 "-Wall",
                 "-Wno-missing-braces",
                 "-Wunused-function"
-            ]
+            ],
+            "forcedInclude": [],
+            "browse": {
+                "limitSymbolsToIncludedHeaders": false
+            }
         }
     ],
     "version": 4
