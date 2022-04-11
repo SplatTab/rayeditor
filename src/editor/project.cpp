@@ -1,5 +1,5 @@
 #include "rayeditor.hpp"
-#include <raypatcher.h>
+#include <repatcher.h>
 #include <filesystem>
 #include <algorithm>
 
@@ -36,7 +36,7 @@ bool Project::SetProjectDirectory(const char *projectPath)
 
             IsProjectLoaded = true;
             projectDir = absolutePath.string();
-            RPatcher::SetTempLibaryPath((projectDir + "/temp/libs").c_str());
+            REPatcher::SetTempLibaryPath((projectDir + "/temp/libs").c_str());
 
             return true;
         }

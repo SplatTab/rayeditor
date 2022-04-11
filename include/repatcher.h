@@ -1,5 +1,5 @@
 /**********************************************************************************************
- * RayPatcher is a library that allows you to load compile and execute libary's dynamically at runtime similar to unity behaviours.
+ * REPatcher is a library that allows you to load compile and execute libary's dynamically at runtime similar to unity behaviours.
  * LICENSE: ZLIB
  * Copyright (c) 2022 (SplatTab)
 **********************************************************************************************/
@@ -46,7 +46,7 @@ enum PatchError {
     PATCH_ERROR_DYNAMIC_LIB_NOT_LOADED // The dynamic libary couldn't be loaded.
 };
 
-class RPatcher {
+class REPatcher {
     public:
 
         // Regular libary functions

@@ -1,5 +1,5 @@
 #include "rayeditor.hpp"
-#include <raypatcher.h>
+#include <repatcher.h>
 #include <rlImGui.h>
 
 using namespace RayEditor;
@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
     bool dockspaceActive;
 
     SetTraceLogCallback(Log::TraceLog);
-    SetConfigFlags(FLAG_MSAA_4X_HINT | FLAG_WINDOW_RESIZABLE);
+    SetConfigFlags(FLAG_MSAA_4X_HINT | FLAG_VSYNC_HINT | FLAG_WINDOW_RESIZABLE);
     InitWindow(screenWidth, screenHeight, Title.c_str());
     SetWindowMinSize(screenWidth, screenHeight);
     rlImGuiSetup(true);
@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
 
         EndDrawing();
 
-        if (RPatcher::Update()) Application::recompiling = true;
+        if (REPatcher::Update()) Application::recompiling = true;
         else Application::recompiling = false;
 
     }

@@ -1,4 +1,5 @@
 # Convetions
+
 ## Code Conventions
 Code element | Convention | Example
 --- | :---: | ---
@@ -28,21 +29,27 @@ I personally use these extensions and I recommend you do too as they help with f
 int main()
 { // Note the brackets
     // 4 Spaces!!
-    if (condition) return true; // One statement
+
+    if (condition) return true;
+
+    if (condition) return true;
+    else return false;
 
     if (condition)
     {
-        return true;
+        if (condition) return true;
+    }
+
+    if (condition)
+    {
+        // Some code
+        // Some code
+        // Some code
     }
     else
     {
-        return false;
-    } // Doesn't count so put brackets
-
-    if (condition)
-    {
-        if (condition) return true; // Counts
-    } // One brackets
+        // One code
+    }
 }
 // Avoid trailing space:
                                                                                                                                                                 
@@ -64,4 +71,6 @@ lib\ -> Contains all the libraries for the project.
 
 include\ -> Contains all the headers for the project.
 
-data\ -> Contains all the data for the compiled application. Ex: General Icons(resources/icons), App Logo(resources/logo)
+data\ -> Contains all the data for the compiled application. Ex: General Icons(resources/icons), App Logo(resources/logo), Templates(templates), Helper Files(include/, libs/), etc.
+
+example\ -> Example working project.

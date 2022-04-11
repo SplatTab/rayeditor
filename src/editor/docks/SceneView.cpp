@@ -1,7 +1,7 @@
 #include "rayeditor.hpp"
 #include "raystyles.hpp"
 #include <math.h>
-#include <raypatcher.h>
+#include <repatcher.h>
 #include <rlImGui.h>
 
 using namespace RayEditor;
@@ -99,7 +99,7 @@ void SceneView::DrawWindow(int dockID)
             PushStyle::RayBlackInvertButtons();
             if (rlImGuiImageButton(&CachedIcons::cameracenter))
             {
-                camera.zoom = 0.75f;
+                camera.zoom = 1;
                 camera.target = Vector2{ 960, 508 };
                 ReloadRenderTexture();
             }
@@ -124,14 +124,14 @@ void SceneView::ReloadRenderTexture()
 
 void SceneView::UpdateSceneView()
 {
-    for (auto& object : RPatcher::m_rayBehaviours) object.RayObj->Close();
-    for (auto& object : RPatcher::m_rayBehaviours) object.RayObj->Init();
+    for (auto& object : REPatcher::m_rayBehaviours) object.RayObj->Close();
+    for (auto& object : REPatcher::m_rayBehaviours) object.RayObj->Init();
 
     BeginTextureMode(ViewTexture);
     ClearBackground(RAYWHITE);
     BeginMode2D(camera);
 
-    for (auto& object : RPatcher::m_rayBehaviours) object.RayObj->Draw();
+    for (auto& object : REPatcher::m_rayBehaviours) object.RayObj->Draw();
 
     EndMode2D();
     EndTextureMode();

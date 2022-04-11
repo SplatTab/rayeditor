@@ -1,6 +1,6 @@
 #include "rayeditor.hpp"
 #include "raystyles.hpp"
-#include <raypatcher.h>
+#include <repatcher.h>
 #include <rlImGui.h>
 #include <filesystem>
 
@@ -147,14 +147,18 @@ void AssetManager::RefreshFiles()
                 if (subp.path().extension().string() == ".cpp")
                 {
                     bool available = true;
-                    for (SourceFile file : RPatcher::m_sourceFiles)
+                    for (SourceFile file : REPatcher::m_sourceFiles)
                     {
                         if (file.absolutePath == subp.path().string()) available = false;
                     }
 
                     if (available)
                     {
-                        PatchError error = RPatcher::AddSourceFile(subp.path().string().c_str(), "-Idata\\include\\", "-L. -Ldata\\libs\\ -lraylib -lopengl32 -lgdi32 -lwinmm -lws2_32");
+                        #ifdef _WIN32
+                        PatchError error = REPatcher::AddSourceFile(subp.path().string().c_str(), "-Idata\\include\\", "-L. -Ldata\\libs\\ -lraylib -lopengl32 -lgdi32 -lwinmm -lws2_32");
+                        #elif __linux__
+                        PatchError error = REPatcher::AddSourceFile(subp.path().string().c_str(), "-Idata\\include\\", "-L. -Ldata\\libs\\ -lraylib -lGL -lm -lpthread -ldl -lrt -lX11");
+                        #endif
                         if (error != PATCH_ERROR_NO_ERROR) Log::Error("Source file: " + subp.path().string() + " could not be loaded. Error: " + Utility::PatchErrorToString(error));
                     }
                 }
