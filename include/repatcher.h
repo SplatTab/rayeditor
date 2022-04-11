@@ -1,6 +1,6 @@
 /**********************************************************************************************
  * REPatcher is a library that allows you to load compile and execute libary's dynamically at runtime similar to unity behaviours.
- * LICENSE: ZLIB
+ * LICENSE: GPL v3
  * Copyright (c) 2022 (SplatTab)
 **********************************************************************************************/
 #pragma once

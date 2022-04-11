@@ -1,7 +1,7 @@
 /**********************************************************************************************
  * Ray Behavior is the only thing needed for patches.
  * LICENSE: ZLIB
- * Copyright (c) 2022 (SplatTab)
+ * Copyright (c) 2022 YOU'RE NAME HERE
 **********************************************************************************************/
 
 class IRayBehaviour {
