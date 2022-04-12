@@ -51,7 +51,9 @@
         "ratio": "cpp",
         "iomanip": "cpp",
         "sstream": "cpp",
-        "list": "cpp"
+        "list": "cpp",
+        "cstring": "cpp",
+        "fstream": "cpp"
     },
     "C_Cpp.errorSquiggles": "Enabled"
 }

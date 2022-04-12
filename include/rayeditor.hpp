@@ -153,14 +153,7 @@ namespace RayEditor {
         class ToolbarMenu {
             public:
 
-                struct MenuItem {
-                    std::string container;
-                    std::string name;
-                    std::function<void()> onClick;
-                }; // A menu item struct used to store menu items.
-
                 static void DrawWindow(); // Draws the toolbar dock.
-                inline static std::vector<MenuItem> menuItems; // A list of menu items.
         }; // The top bar of the editor (static).
     }
 }
