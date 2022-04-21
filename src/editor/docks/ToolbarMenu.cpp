@@ -1,14 +1,18 @@
 #include "rayeditor.hpp"
 #include <imgui_filedialog.h>
-#include <fstream>
+#include <rapidjson/writer.h>
+#include <rapidjson/stringbuffer.h>
 
 using namespace RayEditor;
 using namespace Docks;
+namespace json = rapidjson;
 
+bool dialogEditorSettingsOpen;
 bool dialogOpenProjectOpen;
 ImFileDialogInfo dialogOpenProjectInfo;
 
 void SelectProjectDialog();
+void EditorSettingsDialog(bool &p_open);
 
 void ToolbarMenu::DrawWindow()
 {
@@ -17,7 +21,7 @@ void ToolbarMenu::DrawWindow()
         if (ImGui::BeginMenu("File"))
         {
             if ((ImGui::MenuItem("Open Project", "CTRL+SHIFT+O") || (IsKeyDown(KEY_LEFT_CONTROL) && IsKeyDown(KEY_LEFT_SHIFT) && IsKeyPressed(KEY_O))) && !dialogOpenProjectOpen) SelectProjectDialog();
-            if (ImGui::MenuItem("Settings", "F7") || IsKeyPressed(KEY_F7))
+            if (ImGui::MenuItem("Settings", "F7") || IsKeyPressed(KEY_F7)) std::exchange(dialogEditorSettingsOpen, !dialogEditorSettingsOpen);
 
             if (ImGui::MenuItem("Exit", "Alt+F4")) Application::quit = true;
             ImGui::EndMenu();
@@ -38,6 +42,8 @@ void ToolbarMenu::DrawWindow()
         if (Project::SetProjectDirectory(dialogOpenProjectInfo.resultPath.string().c_str())) Log::Info("Project loaded: " + std::string(Project::GetProjectDirectory()));
         else Log::Warning("Project could not be loaded check that this is a valid project directory with a project.ray file.");
     }
+
+    if(dialogEditorSettingsOpen) EditorSettingsDialog(dialogEditorSettingsOpen);
 }
 
 ///<summary>
@@ -53,18 +59,16 @@ void SelectProjectDialog()
 
 void EditorSettingsDialog()
 {
-    if (ImGui::Begin("Editor Settings"))
+    if (ImGui::Begin("Editor Settings"), dialogEditorSettingsOpen)
     {
-        // std::ofstream settingsFile;
-        // settingsFile.open("data/settings.json");
+        json::StringBuffer s;
+        json::Writer<json::StringBuffer> writer(s);
 
-        // Json::Value settingsData;
-        // settingsData["Advanced"]["TraceLogCallback"] = true;
-
-        // Json::StyledWriter styledWriter;
-        // settingsFile << styledWriter.write(settingsData);
-
-        // settingsFile.close();
+        writer.StartObject();
+        writer.Key("TraceLogCallback");
+        writer.Bool(true);
+        writer.EndObject();
+        ImGui::Text(s.GetString());
     }
 
     ImGui::End();

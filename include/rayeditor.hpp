@@ -60,6 +60,7 @@ namespace RayEditor {
 
             inline static Texture2D folder; // The folder icon.
             inline static Texture2D defaultFile; // The default file icon.
+            inline static Texture2D sourceFile; // The source file icons (C++).
             inline static Texture2D cameracenter; // The camera + marker icon.
     }; // A class for managing and getting cached editor icons.
 

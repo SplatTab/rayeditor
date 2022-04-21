@@ -100,7 +100,7 @@ void SceneView::DrawWindow(int dockID)
             if (rlImGuiImageButton(&CachedIcons::cameracenter))
             {
                 camera.zoom = 1;
-                camera.target = Vector2{ 960, 508 };
+                camera.target = Vector2{ GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f };
                 ReloadRenderTexture();
             }
             PopStyle::RayBlackInvertButtons();
@@ -124,14 +124,14 @@ void SceneView::ReloadRenderTexture()
 
 void SceneView::UpdateSceneView()
 {
-    for (auto& object : REPatcher::m_rayBehaviours) object.RayObj->Close();
-    for (auto& object : REPatcher::m_rayBehaviours) object.RayObj->Init();
+    for (auto object : REPatcher::m_rayBehaviours) object.RayObj->Close();
+    for (auto object : REPatcher::m_rayBehaviours) object.RayObj->Init();
 
     BeginTextureMode(ViewTexture);
     ClearBackground(RAYWHITE);
     BeginMode2D(camera);
 
-    for (auto& object : REPatcher::m_rayBehaviours) object.RayObj->Draw();
+    for (auto object : REPatcher::m_rayBehaviours) object.RayObj->Draw();
 
     EndMode2D();
     EndTextureMode();

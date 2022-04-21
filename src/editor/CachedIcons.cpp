@@ -15,6 +15,10 @@ void CachedIcons::LoadIcons()
     defaultFile.width = 72;
     defaultFile.height = 84;
 
+    sourceFile = LoadTexture("data/resources/icons/sourcefile.png");
+    sourceFile.width = 72;
+    sourceFile.height = 84;
+
     cameracenter = LoadTexture("data/resources/icons/cameracenter.png");
 }
 
@@ -25,5 +29,6 @@ void CachedIcons::UnloadIcons()
 {
     UnloadTexture(folder);
     UnloadTexture(defaultFile);
+    UnloadTexture(sourceFile);
     UnloadTexture(cameracenter);
 }

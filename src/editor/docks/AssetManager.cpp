@@ -1,5 +1,6 @@
 #include "rayeditor.hpp"
 #include "raystyles.hpp"
+#include "basicsys.hpp"
 #include <repatcher.h>
 #include <rlImGui.h>
 #include <filesystem>
@@ -73,16 +74,19 @@ void AssetManager::DrawWindow(int dockID)
 
             if (rlImGuiImageButton(&files[i].icon))
             {
-                if (files[i].isDirectory && files[i].isSelected)
+                if (files[i].isSelected)
                 {
-                    files[i].isSelected = false;
-                    if (files[i].fileExtension == "UpOneFolder\\//") activeRelativeLocation = activeRelativeLocation.substr(0, activeRelativeLocation.find_last_of('\\'));
-                    else activeRelativeLocation += "\\" + files[i].fileName;
+                    if (files[i].isDirectory)
+                    {
+                        if (files[i].fileExtension == "UpOneFolder\\//") activeRelativeLocation = activeRelativeLocation.substr(0, activeRelativeLocation.find_last_of('\\'));
+                        else activeRelativeLocation += "\\" + files[i].fileName;
+                    }
+                    else
+                    {
+                        OpenSourceFile(currentProjectDirectory + activeRelativeLocation + "\\", files[i].fileName, files[i].fileExtension);
+                    }
                 }
-                else
-                {
-                    files[i].isSelected = true;
-                }
+                std::exchange(files[i].isSelected, !files[i].isSelected);
             }
 
             if (copy) copyBuffer += files[i].fileName + files[i].fileExtension + "\r\n";
@@ -120,10 +124,15 @@ void AssetManager::RefreshFiles()
 
     for (const auto & p : fs::directory_iterator(currentProjectDirectory + activeRelativeLocation))
     {
+        fileInfo.isDirectory = false;
         if (p.is_directory())
         {
             fileInfo.icon = CachedIcons::folder;
             fileInfo.isDirectory = true;
+        }
+        else if (p.path().extension() == ".cpp")
+        {
+            fileInfo.icon = CachedIcons::sourceFile;
         }
         else
         {
@@ -157,7 +166,7 @@ void AssetManager::RefreshFiles()
                         #ifdef _WIN32
                         PatchError error = REPatcher::AddSourceFile(subp.path().string().c_str(), "-Idata\\include\\", "-L. -Ldata\\libs\\ -lraylib -lopengl32 -lgdi32 -lwinmm -lws2_32");
                         #elif __linux__
-                        PatchError error = REPatcher::AddSourceFile(subp.path().string().c_str(), "-Idata\\include\\", "-L. -Ldata\\libs\\ -lraylib -lGL -lm -lpthread -ldl -lrt -lX11");
+                        PatchError error = REPatcher::AddSourceFile(subp.path().string().c_str(), "-Idata\\include\\", "-L. -Ldata\\libs\\ -lraylib -lGL -lm lpthread -ldl -lrt -lX11");
                         #endif
                         if (error != PATCH_ERROR_NO_ERROR) Log::Error("Source file: " + subp.path().string() + " could not be loaded. Error: " + Utility::PatchErrorToString(error));
                     }
