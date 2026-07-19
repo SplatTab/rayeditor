@@ -1,4 +1,4 @@
-<img align="left" src="https://github.com/SplatTab/rayeditor/blob/master/data/resources/logo/rayeditor_logo_animation.gif" alt="RayEditor" width="288px">
+![#RayEditor](https://github.com/SplatTab/rayeditor/blob/master/data/resources/logo/rayeditor_logo_animation.gif")
 <br>
 **rayeditor is a work in progress editor using raylib and imgui as a backend**
 
