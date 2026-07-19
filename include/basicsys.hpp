@@ -9,3 +9,4 @@ struct FileInfo {
 }; // A file info struct used to store file information.
 
 void OpenSourceFile(std::string directory, std::string fileName, std::string fileExtension);
+std::string GetPlatformLibs();

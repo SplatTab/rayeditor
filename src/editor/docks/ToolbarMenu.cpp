@@ -11,8 +11,33 @@ bool dialogEditorSettingsOpen;
 bool dialogOpenProjectOpen;
 ImFileDialogInfo dialogOpenProjectInfo;
 
-void SelectProjectDialog();
-void EditorSettingsDialog(bool &p_open);
+///<summary>
+/// Opens a file dialog to select a project file.
+///</summary>
+void SelectProjectDialog()
+{
+    dialogOpenProjectOpen = true;
+    dialogOpenProjectInfo.type = ImGuiFileDialogType_OpenFile;
+    dialogOpenProjectInfo.title = "Select Project File";
+    dialogOpenProjectInfo.directoryPath = std::filesystem::current_path();
+}
+
+void EditorSettingsDialog(bool &p_open)
+{
+    if (ImGui::Begin("Editor Settings"), dialogEditorSettingsOpen)
+    {
+        json::StringBuffer s;
+        json::Writer<json::StringBuffer> writer(s);
+
+        writer.StartObject();
+        writer.Key("TraceLogCallback");
+        writer.Bool(true);
+        writer.EndObject();
+        ImGui::Text(s.GetString());
+    }
+
+    ImGui::End();
+}
 
 void ToolbarMenu::DrawWindow()
 {
@@ -40,36 +65,8 @@ void ToolbarMenu::DrawWindow()
     if (ImGui::FileDialog(&dialogOpenProjectOpen, &dialogOpenProjectInfo))
     {
         if (Project::SetProjectDirectory(dialogOpenProjectInfo.resultPath.string().c_str())) Log::Info("Project loaded: " + std::string(Project::GetProjectDirectory()));
-        else Log::Warning("Project could not be loaded check that this is a valid project directory with a project.ray file.");
+        else Log::Warning("Project could not be loaded at: " + dialogOpenProjectInfo.resultPath.string() + " check that this is a valid project directory with a project.ray file.");
     }
 
     if(dialogEditorSettingsOpen) EditorSettingsDialog(dialogEditorSettingsOpen);
-}
-
-///<summary>
-/// Opens a file dialog to select a project file.
-///</summary>
-void SelectProjectDialog()
-{
-    dialogOpenProjectOpen = true;
-    dialogOpenProjectInfo.type = ImGuiFileDialogType_OpenFile;
-    dialogOpenProjectInfo.title = "Select Project File";
-    dialogOpenProjectInfo.directoryPath = std::filesystem::current_path();
-}
-
-void EditorSettingsDialog()
-{
-    if (ImGui::Begin("Editor Settings"), dialogEditorSettingsOpen)
-    {
-        json::StringBuffer s;
-        json::Writer<json::StringBuffer> writer(s);
-
-        writer.StartObject();
-        writer.Key("TraceLogCallback");
-        writer.Bool(true);
-        writer.EndObject();
-        ImGui::Text(s.GetString());
-    }
-
-    ImGui::End();
 }

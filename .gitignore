@@ -6,3 +6,8 @@ imgui.ini
 [Bb]in
 [Dd]ebug/
 [R]elease/
+*.o
+[t]hird_party/
+*.dll
+*.so
+*.old

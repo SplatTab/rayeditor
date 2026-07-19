@@ -8,7 +8,7 @@ int main(int argc, char *argv[])
 {
     int screenWidth = 1280;
     int screenHeight = 800;
-    const std::string Title("RayEditor V" + std::string(EDITOR_VERSION));
+    const std::string Title("RayEditor V" + std::string(EDITOR_VERSION) + "-" + std::string(EDITOR_PLATFORM));
     bool dockspaceActive;
 
     SetTraceLogCallback(Log::TraceLog);
@@ -71,8 +71,17 @@ int main(int argc, char *argv[])
 
         EndDrawing();
 
-        if (REPatcher::Update()) Application::recompiling = true;
-        else Application::recompiling = false;
+        UpdateResult updateResult = REPatcher::Update();
+        if (updateResult.wasRecompiled) {
+            Application::recompiling = true;
+            if (updateResult.compileErrors) {
+                for (SourceFile file : updateResult.failedFiles) {
+                    Log::Error("Failed to compile: \n" + file.lastCompileError);
+                }
+            }
+        } else {
+            Application::recompiling = false;
+        }
 
     }
 

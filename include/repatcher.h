@@ -29,12 +29,20 @@ typedef struct {
 } RayObject; // A ray object is a ray behaviour with a creator and a deleter.
 
 typedef struct {
+    std::string lastCompileError; // The last compile error if any.
     std::filesystem::path absolutePath; // The absolute path to the source file.
     std::filesystem::path dynamicLibaryPath; // The absolute path to this source files current dynamic libary.
     std::string includePaths; // The include paths for the ray behaviour.
     std::string libPaths; // The lib paths for the ray behaviour.
     int64_t lastTimeWritten; // The last time the file was modified.
 } SourceFile; // Info about a source file that will be compiled and loaded at runtime if modified.
+
+typedef struct {
+    bool wasRecompiled; // If a file needed to be recompiled
+    bool compileErrors; // If there were any compile errors
+    std::vector<SourceFile> failedFiles; // files that failed to compile
+    std::vector<SourceFile> recompiledFiles; // files that were recompiled
+} UpdateResult;
 
 enum PatchError {
     PATCH_ERROR_NO_ERROR, // No error operation was performed.
@@ -51,14 +59,14 @@ class REPatcher {
 
         // Regular libary functions
         static PatchError SetTempLibaryPath(const char *path); // Setup a temporary path to manage the compiled libaries.
-        static PatchError AddSourceFile(const char *path, const char *includePath, const char *libsPaths); // Add a source file to the context to be updated.
-        static bool Update(); // Update the context and do things like check if libaries need to be recompiled and recompile them.
+        static PatchError AddSourceFile(std::string path, std::string includePath, std::string libsPaths); // Add a source file to the context to be updated.
+        static UpdateResult Update(); // Update the context and do things like check if libaries need to be recompiled and recompile them.
         static void UnloadAll(); // Unloads all ray behaviours. Note: Should be called at the end of you're program or to wipe all ray behaviours and source files.
         inline static std::vector<RayObject> m_rayBehaviours; // A list of ray behaviours for you're program.
 
         // Advanced System stuff. Note: Should not be used manually but still available.
         static int64_t GetLastTimeWritten(const char *path); // Get the last time a file was modified.
-        static std::string Compile(SourceFile sourceFile); // Compiles a source file and returns the path to the dynamic compiled libary.
+        static bool Compile(SourceFile &sourceFile); // Compiles a source file and returns whether compilation was succesful
         static PatchError AddLibary(const char *path); // Extracts a ray behaviour from a libary and adds it to ray behaviours.
         inline static std::vector<SourceFile> m_sourceFiles; // A list of source files.
 

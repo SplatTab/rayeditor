@@ -1,16 +1,26 @@
 #include <basicsys.hpp>
 
-#ifdef __WIN32__
+#if defined(_WIN32) || defined(_WIN64)
 #include <windows.h>
-#elif __linux__
+#else
 #include <unistd.h>
 #endif
 
 void OpenSourceFile(std::string directory, std::string fileName, std::string fileExtension)
 {
-    #ifdef __WIN32__
+    #if defined(_WIN32) || defined(_WIN64)
     ShellExecuteA(NULL, "open", (LPCSTR)(directory + fileName + fileExtension).c_str(), (LPCSTR)directory.c_str(), (LPCSTR)directory.c_str(), SW_HIDE);
-    #elif __linux__
-    execl("code", (currentProjectDirectory + activeRelativeLocation + "\\ " + currentProjectDirectory + activeRelativeLocation + "\\" + fileName + fileExtension).c_str())
+    #else
+    std::string command = "xdg-open \"" + directory + fileName + fileExtension + "\"";
+    system(command.c_str());
+    #endif
+}
+
+std::string GetPlatformLibs()
+{
+    #if defined(_WIN32) || defined(_WIN64)
+    return "-lopengl32 -lgdi32 -lwinmm -lws2_32";
+    #else
+    return "-lGL -lm lpthread -ldl -lrt -lX11";
     #endif
 }

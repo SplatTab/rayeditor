@@ -1,14 +1,47 @@
-SRC = lib/imgui/*.cpp src/editor/*.cpp src/editor/docks/*.cpp
+# Compiler
+# Should use MSYS 2 G++ on windows
+CXX := g++
+CXXFLAGS := -std=c++17 -O2 -Wall -Wno-missing-braces -Wunused-function
 
-APPSRC = src/main.cpp src/rayeditor.res
-APPOUTPUT = rayeditor.exe
+# Includes
+INCLUDES := \
+    -Iinclude \
+    -Iinclude/imgui \
+    -Iinclude/raylib\
 
-INCLUDES = -Iinclude -Iinclude/imgui -Iinclude/raylib
-LIBPATHS = -Llib -L.
-LIBS = -lrepatcher -lraylib -lopengl32 -lgdi32 -lwinmm -lws2_32
+# Source files
+SRC := \
+    $(wildcard lib/imgui/*.cpp) \
+	$(wildcard lib/repatcher/*.cpp) \
+    $(wildcard src/editor/*.cpp) \
+    $(wildcard src/editor/docks/*.cpp) \
+    src/main.cpp
 
-default:
-	g++ -std=c++17 $(SRC) $(APPSRC) -o $(APPOUTPUT) -O2 -Wall -Wno-missing-braces -Wunused-function $(INCLUDES) $(LIBPATHS) $(LIBS)
+OBJ := $(SRC:.cpp=.o)
 
-releasewin:
-	g++ -mwindows -std=c++17 $(SRC) $(APPSRC) -o $(APPOUTPUT) -O2 -Wall -Wno-missing-braces -Wunused-function $(INCLUDES) $(LIBPATHS) $(LIBS)
+TARGET := rayeditor
+
+# Platform detection
+ifeq ($(OS),Windows_NT)
+    TARGET := rayeditor.exe
+    LIBS := -lraylib -lopengl32 -lgdi32 -lwinmm -lws2_32
+    RES := src/rayeditor.res
+else
+    LIBS := -lraylib -lGL -lpthread -ldl -lm
+    RES :=
+endif
+
+LDFLAGS := -Llib -L.
+
+all: $(TARGET)
+
+$(TARGET): $(OBJ) $(RES)
+	$(CXX) $(OBJ) $(RES) -o $@ $(LDFLAGS) $(LIBS)
+
+%.o: %.cpp
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
+
+clean:
+	rm -f $(OBJ) $(TARGET)
+
+.PHONY: all clean

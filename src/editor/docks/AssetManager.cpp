@@ -4,6 +4,7 @@
 #include <repatcher.h>
 #include <rlImGui.h>
 #include <filesystem>
+#include <utility>
 
 using namespace RayEditor;
 using namespace Docks;
@@ -163,11 +164,8 @@ void AssetManager::RefreshFiles()
 
                     if (available)
                     {
-                        #ifdef _WIN32
-                        PatchError error = REPatcher::AddSourceFile(subp.path().string().c_str(), "-Idata\\include\\", "-L. -Ldata\\libs\\ -lraylib -lopengl32 -lgdi32 -lwinmm -lws2_32");
-                        #elif __linux__
-                        PatchError error = REPatcher::AddSourceFile(subp.path().string().c_str(), "-Idata\\include\\", "-L. -Ldata\\libs\\ -lraylib -lGL -lm lpthread -ldl -lrt -lX11");
-                        #endif
+                        std::string libPaths = "-L. -Ldata/libs/ -lraylib " + GetPlatformLibs();
+                        PatchError error = REPatcher::AddSourceFile(subp.path().string(), "-Idata/include/", libPaths.c_str());
                         if (error != PATCH_ERROR_NO_ERROR) Log::Error("Source file: " + subp.path().string() + " could not be loaded. Error: " + Utility::PatchErrorToString(error));
                     }
                 }

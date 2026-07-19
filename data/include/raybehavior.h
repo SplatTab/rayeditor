@@ -1,9 +1,3 @@
-/**********************************************************************************************
- * Ray Behavior is the only thing needed for patches.
- * LICENSE: ZLIB
- * Copyright (c) 2022 YOU'RE NAME HERE
-**********************************************************************************************/
-
 class IRayBehaviour {
     public:
 
@@ -14,3 +8,13 @@ class IRayBehaviour {
         virtual void Draw() {};
         virtual void Close() {};
 };
+
+#define RAYCLASS(className) \
+extern "C" __declspec(dllexport) IRayBehaviour* GetBehaviour() \
+{ \
+    return new className(); \
+} \
+extern "C" __declspec(dllexport) void KillBehaviour(IRayBehaviour* p) \
+{ \
+    delete p; \
+}

@@ -5,6 +5,7 @@
     Changes by Vladimir Sigalkin
 */
 
+#include <algorithm>
 #include <chrono>
 #include <string>
 #include <filesystem>
@@ -43,6 +44,27 @@ void RefreshInfo(ImFileDialogInfo* dialogInfo)
             dialogInfo->currentFiles.push_back(entry);
         }
     }
+}
+
+static std::string FormatTime(const std::filesystem::file_time_type& lastWriteTime)
+{
+    auto st = std::chrono::time_point_cast<std::chrono::system_clock::duration>(
+        lastWriteTime
+        - std::filesystem::file_time_type::clock::now()
+        + std::chrono::system_clock::now());
+
+    std::time_t tt = std::chrono::system_clock::to_time_t(st);
+    std::tm mt;
+
+    #if defined(_WIN32) || defined(_WIN64)
+    localtime_s(&mt, &tt);
+    #else
+    localtime_r(&tt, &mt);
+    #endif
+
+    std::stringstream ss;
+    ss << std::put_time(&mt, "%F %R");
+    return ss.str();
 }
 
 bool ImGui::FileDialog(bool* open, ImFileDialogInfo* dialogInfo)
@@ -258,13 +280,7 @@ bool ImGui::FileDialog(bool* open, ImFileDialogInfo* dialogInfo)
             ImGui::NextColumn();
 
             auto lastWriteTime = directoryEntry.last_write_time();
-            auto st = std::chrono::time_point_cast<std::chrono::system_clock::duration>(lastWriteTime - decltype(lastWriteTime)::clock::now() + std::chrono::system_clock::now());
-            std::time_t tt = std::chrono::system_clock::to_time_t(st);
-            std::tm mt;
-            localtime_s(&mt, &tt);
-            std::stringstream ss;
-            ss << std::put_time(&mt, "%F %R");
-            ImGui::TextUnformatted(ss.str().c_str());
+            ImGui::TextUnformatted(FormatTime(lastWriteTime).c_str());
             ImGui::NextColumn();
 
             index++;
@@ -290,13 +306,7 @@ bool ImGui::FileDialog(bool* open, ImFileDialogInfo* dialogInfo)
             ImGui::NextColumn();
 
             auto lastWriteTime = fileEntry.last_write_time();
-            auto st = std::chrono::time_point_cast<std::chrono::system_clock::duration>(lastWriteTime - decltype(lastWriteTime)::clock::now() + std::chrono::system_clock::now());
-            std::time_t tt = std::chrono::system_clock::to_time_t(st);
-            std::tm mt;
-            localtime_s(&mt, &tt);
-            std::stringstream ss;
-            ss << std::put_time(&mt, "%F %R");
-            ImGui::TextUnformatted(ss.str().c_str());
+            ImGui::TextUnformatted(FormatTime(lastWriteTime).c_str());
             ImGui::NextColumn();
 
             index++;

@@ -10,6 +10,13 @@
 namespace RayEditor {
 
     #define EDITOR_VERSION "0.7.0" // The current editor version.
+    #if defined(_WIN32) || defined(_WIN64)
+    #define EDITOR_PLATFORM "Windows" // The current platform.
+    #elif defined(__linux__)
+    #define EDITOR_PLATFORM "Linux" // The current platform.
+    #else
+    #define EDITOR_PLATFORM "Unknown" // The current platform.
+    #endif
 
     struct LogItem {
         std::string prefix;

@@ -1,7 +1,7 @@
 #include <raybehavior.h>
 #include <raylib.h>
 
-class #CLASSNAME# : public IRayBehaviour {
+class Player : public IRayBehaviour {
     private:
         Vector2 position;
         float speed;
@@ -12,7 +12,9 @@ class #CLASSNAME# : public IRayBehaviour {
         // Init is called when object is initialized
         void Init() override
         {
-            tex = LoadTexture("player.png");
+            tex = LoadTexture("example/assets/icon.png");
+            speed = 200.0f;
+            position = Vector2{ GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f };
         }
 
         // Update is called every frame before rendering.
@@ -46,4 +48,4 @@ class #CLASSNAME# : public IRayBehaviour {
         }
 };
 
-RAYCLASS(#CLASSNAME#)
+RAYCLASS(Player)

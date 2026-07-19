@@ -1,6 +1,7 @@
 # Convetions
 
 ## Code Conventions
+
 Code element | Convention | Example
 --- | :---: | ---
 Variables/Params/Pointers | *camelCase | `const char *projectDir;`
@@ -10,9 +11,7 @@ Enum | TitleCase {ALL_CAPS} | `enum TraceLogLevel {LOG_INFO}`
 Structs/Struct Members | TitleCase {camelCase} | `struct LogItem {int logType}`
 Float Values | Always x.xf | `float editorVersion = 0.01f`
 
-
-## Vscode Extensions
-I personally use these extensions and I recommend you do too as they help with following our coding conventions and make others lifes easier
+## VSCode Extension
 
 ["redlin.remove-tabs-on-save"](https://marketplace.visualstudio.com/items?itemName=redlin.remove-tabs-on-save),
 
@@ -20,14 +19,15 @@ I personally use these extensions and I recommend you do too as they help with f
 
 ["ms-vscode.cpptools-extension-pack"](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools-extension-pack)
 
-
 ## Indentation
-1. Use 4 Spaces personally I prefer tabs but they make others lives harder but with fancy text editors this shouldn't really change much for you.
-1. Use brackets in C# Fashion unless it is a one statement.
-1. Avoid crazy space.
+
+1. 4 Spaces not tabs
+1. Use brackets unless it's a single statement
+1. Avoid excessive trailing space.
+
 ```cpp
 int main()
-{ // Note the brackets
+{ // Brackets
     // 4 Spaces!!
 
     if (condition) return true;
@@ -53,16 +53,22 @@ int main()
 }
 // Avoid trailing space:
                                                                                                                                                                 
+
+
 ```
 
 ## Project Structure
-### File Naming:
+
+### File Naming
+
 File Type | Convention | Example
 --- | :---: | ---
 Header Files | ALL_LOWER_CASE | `rayeditor.hpp`, `raylib.h`
 C/C++ Files | TitleCase | `ConsoleDock.cpp`(Only exception main.cpp)
 Folders | ALL_LOWER_CASE | `src\`
-### Folders:
+
+### Folders
+
 New folders should be made when necessary. Ex: Namespaces, Libaries, Modules, Inherited Classes.
 
 src\ -> Contains all the source code for the project.
